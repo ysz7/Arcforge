@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Arcforge – Graph-based Laravel IDE</title>
+    <meta
+      name="description"
+      content="Arcforge is a graph-based, visual IDE and architecture explorer for Laravel projects. Explore, refactor, and generate code from a live dependency graph."
+    />
+    <link rel="stylesheet" href="assets/style.css" />
+  </head>
+  <body>
+    <main>
+      <div class="page">
+        <header>
+          <div class="brand">
+            <div class="brand-mark" aria-hidden="true"></div>
+            <div class="brand-name">Arcforge</div>
+          </div>
+          <nav class="header-links" aria-label="Primary navigation">
+            <a class="header-link" href="#features">Features</a>
+            <a class="header-link" href="#gallery">Screenshots</a>
+            <a class="header-link" href="#updates">How updates work</a>
+            <a
+              class="header-link header-link-cta"
+              href="https://github.com/ysz7/Arcforge"
+              target="_blank"
+              rel="noreferrer"
+            >
+              View main repo
+            </a>
+          </nav>
+        </header>
+
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-text">
+            <div class="hero-tagline">
+              <span class="hero-tagline-dot" aria-hidden="true"></span>
+              <span>Graph-based Laravel IDE</span>
+            </div>
+            <h1 id="hero-title" class="hero-title">Architecture you can see.</h1>
+            <p class="hero-subtitle">
+              Arcforge turns your Laravel codebase into an interactive graph – so you can
+              explore relationships, generate boilerplate, and perform safe refactors
+              without losing track of how everything connects.
+            </p>
+            <div class="hero-meta">
+              <span>
+                <span class="hero-meta-dot" aria-hidden="true"></span>
+                Windows desktop app (.exe)
+              </span>
+              <span>
+                <span class="hero-meta-dot" aria-hidden="true"></span>
+                Focused on Laravel projects
+              </span>
+              <span>
+                <span class="hero-meta-dot" aria-hidden="true"></span>
+                No telemetry, local-first
+              </span>
+            </div>
+
+            <div class="hero-actions">
+              <a
+                class="btn-primary"
+                href="https://github.com/ysz7/Arcforge/releases/latest"
+                data-download-button
+              >
+                <span>Download for Windows (.exe)</span>
+              </a>
+              <a class="btn-secondary" href="#updates">
+                <span>See how updates work</span>
+              </a>
+            </div>
+            <p class="hero-note">
+              <span data-download-meta>Latest stable: 1.0.0</span> · Requires Windows
+              10 or later.
+            </p>
+          </div>
+
+          <aside class="hero-visual" aria-label="Arcforge interface preview">
+            <div class="hero-window-chrome">
+              <div class="hero-dots" aria-hidden="true">
+                <span class="hero-dot"></span>
+                <span class="hero-dot"></span>
+                <span class="hero-dot"></span>
+              </div>
+              <div class="hero-window-title">Arcforge – Graph view</div>
+            </div>
+            <div class="hero-graph">
+              <div class="hero-graph-grid" aria-hidden="true"></div>
+              <div class="hero-graph-content">
+                <div class="node" style="margin-top: 10px">
+                  <div class="node-label">HTTP &rarr; Controller</div>
+                  <div class="node-meta">App\Http\Controllers\OrderController</div>
+                  <div class="node-tag">
+                    <span class="node-tag-dot"></span>
+                    Entry point
+                  </div>
+                </div>
+                <div class="node" style="margin-top: 56px">
+                  <div class="node-label">Service layer</div>
+                  <div class="node-meta">App\Services\OrderService</div>
+                  <div class="node-tag">
+                    <span class="node-tag-dot"></span>
+                    Injectable
+                  </div>
+                </div>
+                <div class="node" style="margin-top: 102px">
+                  <div class="node-label">Domain &rarr; Model</div>
+                  <div class="node-meta">App\Models\Order</div>
+                  <div class="node-tag">
+                    <span class="node-tag-dot"></span>
+                    Eloquent
+                  </div>
+                </div>
+                <div class="connector connector-1" aria-hidden="true"></div>
+                <div class="connector connector-2" aria-hidden="true"></div>
+                <div class="connector connector-3" aria-hidden="true"></div>
+              </div>
+              <div class="hero-graph-note">
+                Visual graph of your Laravel architecture
+              </div>
+            </div>
+          </aside>
+        </section>
+
+        <section id="features" class="section" aria-labelledby="features-title">
+          <div class="section-header">
+            <div>
+              <h2 id="features-title" class="section-title">Built for real projects</h2>
+              <p class="section-subtitle">
+                Arcforge is a companion for teams working on medium and large Laravel
+                codebases.
+              </p>
+            </div>
+          </div>
+          <div class="features-grid">
+            <article class="feature-card">
+              <div class="feature-label">Graph-based view</div>
+              <h3 class="feature-title">Visual editing of Laravel architecture</h3>
+              <p class="feature-body">
+                Explore your controllers, services, models, and dependencies as an
+                interactive graph instead of a flat tree of files.
+              </p>
+              <p class="feature-meta">
+                Quickly see which parts of your system a change will touch before you
+                touch a single line of code.
+              </p>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-label">Forge wizard</div>
+              <h3 class="feature-title">Guided code generation for Laravel</h3>
+              <p class="feature-body">
+                Use the Forge wizard to generate controllers, services, resources,
+                requests, and more – wired into your existing architecture.
+              </p>
+              <p class="feature-meta">
+                Arcforge suggests reasonable defaults based on your current graph, so
+                new modules feel native to your project.
+              </p>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-label">Safe refactors</div>
+              <h3 class="feature-title">Safer changes across the graph</h3>
+              <p class="feature-body">
+                Perform dependency injections, cleanups, and method-level injections with
+                the graph in view, reducing the risk of accidental breakage.
+              </p>
+              <p class="feature-meta">
+                Designed to sit alongside your editor – not replace it – while giving you
+                confidence in large-scale changes.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section id="gallery" class="section" aria-labelledby="gallery-title">
+          <div class="section-header">
+            <div>
+              <h2 id="gallery-title" class="section-title">Screenshots &amp; gallery</h2>
+              <p class="section-subtitle">
+                Replace these placeholders with real screenshots and GIFs from Arcforge.
+              </p>
+            </div>
+          </div>
+
+          <div class="gallery-grid">
+            <figure class="screenshot-card">
+              <div class="screenshot-tag">Graph view</div>
+              <figcaption>
+                Placeholder for the main graph-based architecture view.<br />
+                <!-- Place the real asset at docs/assets/screenshots/graph-view.png -->
+              </figcaption>
+            </figure>
+
+            <figure class="screenshot-card">
+              <div class="screenshot-tag">Forge wizard</div>
+              <figcaption>
+                Placeholder for the Forge wizard, showing code generation steps.<br />
+                <!-- Place the real asset at docs/assets/screenshots/forge-wizard.png -->
+              </figcaption>
+            </figure>
+
+            <figure class="screenshot-card">
+              <div class="screenshot-tag">Safe refactors</div>
+              <figcaption>
+                Placeholder for a refactor preview, highlighting impacted nodes.<br />
+                <!-- Place the real asset at docs/assets/screenshots/safe-refactor.gif -->
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section id="updates" class="section" aria-labelledby="updates-title">
+          <div class="section-header">
+            <div>
+              <h2 id="updates-title" class="section-title">How updates work</h2>
+              <p class="section-subtitle">
+                Arcforge periodically checks a small JSON file hosted on GitHub Pages to
+                see if a new version is available.
+              </p>
+            </div>
+          </div>
+
+          <div class="updates-layout">
+            <div class="updates-copy">
+              <p>
+                When the Arcforge desktop client starts, it reads its own version (for
+                example <code>1.1.0</code>) and performs a simple
+                <code>GET</code> request to:
+              </p>
+              <p>
+                <code>https://ysz7.github.io/Arcforge/updates.json</code>
+              </p>
+              <p>
+                The file <code>updates.json</code> is a static manifest that describes the
+                latest stable version, the minimum supported version, and one or more
+                download links for Windows builds.
+              </p>
+              <p>
+                If a newer version is available, Arcforge shows a small prompt and lets
+                you open the release or changelog in your browser. If you are already on
+                the latest version, the client stays quiet.
+              </p>
+              <div class="updates-callout">
+                <strong>No background services.</strong> The check is a simple HTTPS
+                request to a static JSON file on GitHub Pages. There is no telemetry and
+                no tracking – your code never leaves your machine.
+              </div>
+            </div>
+
+            <aside class="updates-code" aria-label="Update check pseudo-code example">
+              <div class="updates-code-line-muted">
+                // Pseudo-code for how Arcforge checks for updates
+              </div>
+              <div>const currentVersion = "1.1.0";</div>
+              <div>
+                const url =
+                "https://ysz7.github.io/Arcforge/updates.json";
+              </div>
+              <br />
+              <div>fetch(url)</div>
+              <div>&nbsp;&nbsp;.then(res =&gt; res.json())</div>
+              <div>&nbsp;&nbsp;.then(manifest =&gt; &#123;</div>
+              <div>&nbsp;&nbsp;&nbsp;&nbsp;// compare manifest.latestVersion with currentVersion</div>
+              <div>&nbsp;&nbsp;&nbsp;&nbsp;// if newer: ask user and open changelogUrl or Releases</div>
+              <div>&nbsp;&nbsp;&#125;);</div>
+            </aside>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <div class="footer-inner">
+        <div class="footer-meta">
+          Arcforge &mdash; Graph-based Laravel IDE / Architecture explorer.
+        </div>
+        <div class="footer-links">
+          <a
+            href="https://github.com/ysz7/Arcforge"
+            target="_blank"
+            rel="noreferrer"
+            >Main Arcforge repository</a
+          >
+          <a
+            href="https://github.com/ysz7/Arcforge/issues"
+            target="_blank"
+            rel="noreferrer"
+            >Issues &amp; feedback</a
+          >
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/script.js"></script>
+  </body>
+</html>
+

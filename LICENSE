@@ -1,0 +1,46 @@
+Arcforge License
+
+Copyright (c) 2026 ysz7
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software, associated static website, documentation, and any official
+Arcforge binaries distributed through this project (collectively, the
+"Software"), to:
+
+1. Download, install, and run the Software for personal or commercial work.
+2. Use the Software to inspect, explore, and modify their own Laravel projects.
+
+Subject to the following conditions:
+
+1. **No misrepresentation of authorship or origin**
+   - You must not present the Software as your own creation.
+   - You must not remove or alter any copyright, license, or author notices
+     that identify "Arcforge" or "ysz7" as the original author.
+
+2. **Name and branding protection**
+   - "Arcforge" (including logos, visual identity, and confusingly similar
+     names) is reserved to the original author.
+   - You may not redistribute a modified version of the Software under the
+     name "Arcforge" or any confusingly similar name.
+   - You may not use the "Arcforge" name, logo, or branding to market or
+     promote your own products without prior written permission from the
+     original author.
+
+3. **Redistribution**
+   - You may share unmodified copies of the official binaries and this
+     repository as long as all original notices (including this license and
+     the author's credit) are preserved.
+   - You may not sell, sublicense, or distribute modified versions of the
+     Software without prior written permission from the original author.
+
+4. **No warranty**
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL
+   THE AUTHOR OR COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+   DEALINGS IN THE SOFTWARE.
+
