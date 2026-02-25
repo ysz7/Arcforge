@@ -12,6 +12,12 @@ Arcforge turns your backend into a navigable graph: controllers, services, model
 > **Open Beta** · Windows desktop · Currently focused on **Laravel** backends.  
 > **Planned next language:** Golang.
 
+### Screenshots
+
+| Graph view | Add blueprint | Add new logic |
+|------------|---------------|----------------|
+| ![Graph view](docs/arcforge-gallery/arcforge-graph-1.png) | ![Add blueprint](docs/arcforge-gallery/arcforge-modal-add-blueprint-2.png) | ![Add new logic](docs/arcforge-gallery/arcforge-add-new-logic-3.png) |
+
 ---
 
 ### What Arcforge is good for
