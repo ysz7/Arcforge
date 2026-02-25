@@ -52,11 +52,11 @@ There are **no background services, telemetry, or tracking**.
 
 ### Download
 
-- **Latest Windows installer (.exe):**  
+- **Latest Windows build (.zip):**  
   `https://github.com/ysz7/Arcforge/releases/latest`
 
-- **Direct link for v1.0.0:**  
-  `https://github.com/ysz7/Arcforge/releases/download/v1.0.0/ArcforgeSetup-1.0.0.exe`
+- **Direct link for v1.0.0 (.zip):**  
+  `https://github.com/ysz7/Arcforge/releases/download/v1.0.0/Arcforge-1.0.0.zip`
 
 ---
 
