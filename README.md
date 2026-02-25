@@ -1,71 +1,126 @@
 ## Arcforge
 
-**Graph-based visual IDE and architecture explorer for Laravel projects.**  
-This repository hosts the public landing page and the static update manifest for the Arcforge desktop app (Windows `.exe`).
+**Graph-based IDE and architecture explorer for backend projects.**
 
-Arcforge turns a Laravel codebase into a navigable graph: controllers, services, models, and dependencies become nodes and edges you can explore, generate, and refactor with more confidence.
+Arcforge turns your backend into a navigable graph: controllers, services, models, and their dependencies become nodes and edges you can explore, understand, and refactor with more confidence.
 
----
+- 🔍 **See your backend as a graph**, not as isolated files
+- 🧭 **Trace request flows** across controllers, services, and data layers
+- 📂 **Open any node to the real code** that powers it
+- 🧱 **Design and evolve architectures** without losing track of how everything connects
 
-### What this repository contains
-
-- **Product website (GitHub Pages)**
-  - Lives under `docs/` and is served at `https://ysz7.github.io/Arcforge/`.
-  - Clean, minimal landing page (`docs/index.html`) explaining what Arcforge is and how to get the latest Windows build.
-- **Static update manifest**
-  - `docs/updates.json` is a small JSON file that the Arcforge desktop client reads on startup.
-  - It tells the client what the latest stable version is, where to download it, and where to find the changelog.
-- **Changelog (optional)**
-  - `changelog.md` can be used alongside GitHub Releases to track notable changes between versions.
-
-If you just want to try Arcforge, you do not need to understand any of the implementation details below – go to the website or GitHub Releases and download the latest installer for Windows.
+> **Open Beta** · Windows desktop · Currently focused on **Laravel** backends.  
+> **Planned next language:** Golang.
 
 ---
 
-### Where to download Arcforge
+### What Arcforge is good for
 
-- **Latest Windows build (.exe)**  
+- **Architecture exploration**
+  - Understand unfamiliar Laravel projects quickly
+  - Onboard new team members with a visual map of the system
+- **Refactoring with context**
+  - See what depends on what before you touch code
+  - Avoid breaking hidden paths and side effects
+- **Communication**
+  - Use the graph to explain backend flows to other engineers, tech leads, and stakeholders
+
+> **Important**  
+> The current Open Beta is best suited for **viewing and understanding projects**, especially small-to-medium codebases.  
+> It is **not recommended** to rely on this version to edit or refactor **very large production projects** end-to-end.
+
+Arcforge will **not modify your code automatically** during normal usage; it reads and indexes your project to build the graph.
+
+---
+
+### Status
+
+- **Stage:** Open Beta
+- **Platform:** Windows (x64)
+- **Supported stack:** Laravel (PHP)
+- **Next integration (planned):** Golang
+
+Updates are distributed via:
+
+- GitHub Releases, and
+- a static `updates.json` manifest served from the Arcforge website.
+
+The desktop app simply checks the manifest on startup to see whether a newer version is available.  
+There are **no background services, telemetry, or tracking**.
+
+---
+
+### Download
+
+- **Latest Windows installer (.exe):**  
   `https://github.com/ysz7/Arcforge/releases/latest`
 
-- **Website / landing page**  
-  `https://ysz7.github.io/Arcforge/`
-
-Both are kept in sync via GitHub Releases and the `updates.json` manifest.
+- **Direct link for v1.0.0:**  
+  `https://github.com/ysz7/Arcforge/releases/download/v1.0.0/ArcforgeSetup-1.0.0.exe`
 
 ---
 
-### How updates work (high level)
+### How it works (high level)
 
-1. On startup, the Arcforge desktop app:
-   - Reads its own current version (for example `1.0.0`).
-   - Performs a simple HTTP GET to `https://ysz7.github.io/Arcforge/updates.json`.
-2. The manifest describes:
-   - `latestVersion` – the newest stable version available.
-   - `minimumSupportedVersion` – the oldest client version that still understands the manifest.
-   - At least one Windows x64 download entry with a direct link to the installer.
-3. If a newer version is available:
-   - The app shows a small prompt and, on confirmation, opens either the changelog URL or the “Latest release” page in your default browser.
-4. If you are already up to date, Arcforge stays silent.
+1. **Scan & index**
+   - Point Arcforge at your Laravel project.
+   - The app parses controllers, services, models, and key routing / dependency information.
 
-Under the hood this is just a static JSON file served from GitHub Pages – there are no background services, no telemetry, and no tracking.
+2. **Build the graph**
+   - Nodes represent backend units (controllers, services, models, etc.).
+   - Edges describe relationships and call chains between those units.
+
+3. **Explore**
+   - Click through nodes to:
+     - see connections,
+     - trace paths across the graph,
+     - open the **actual code** behind a node in the built-in viewer.
+
+4. **Iterate on your architecture**
+   - Use the graph to plan refactors or new features.
+   - Keep mental overhead low by navigating visually rather than hunting through files.
 
 ---
 
-### For maintainers
+### Roadmap (high level)
 
-- **GitHub Pages**
-  - Configure the repository to serve Pages from the `docs/` folder.
-  - After each change, check that `https://ysz7.github.io/Arcforge/updates.json` returns valid JSON.
+> This is intentionally non-binding and can change as the beta evolves.
 
-- **Publishing a new release**
-  1. Create a GitHub Release (e.g. tag `v1.1.0`) with a Windows installer attached.
-  2. Update `docs/updates.json`:
-     - Bump `latestVersion`.
-     - Optionally bump `minimumSupportedVersion`.
-     - Update or add the Windows x64 entry in `downloads`.
-     - Point `changelogUrl` to the new release or relevant section in `changelog.md`.
-  3. Commit and push the changes to `main`.
-  4. Verify that both the website and `updates.json` are served correctly via GitHub Pages.
+- **Language / framework support**
+  - ✅ Laravel
+  - ⏳ Golang (planned)
+- **Graph improvements**
+  - Better grouping of modules / bounded contexts
+  - More granular edge types (read/write, sync/async, etc.)
+- **Developer workflow**
+  - Smarter navigation between graph nodes and code
+  - Improved search and filtering across large graphs
 
-The main Arcforge source code lives in the primary repository at `https://github.com/ysz7/Arcforge`. This companion repo is focused on the public website and the update protocol.
+---
 
+### Safety & limits in Open Beta
+
+- Arcforge focuses on **reading and visualizing** your codebase.
+- It is **safe to use for inspection** of existing projects.
+- For now, consider it a **companion for understanding and planning**, not a full-blown refactoring engine for massive production monoliths.
+
+If you run into edge cases or performance issues on large projects, please share feedback with project details (size, tech stack, symptoms).
+
+---
+
+### Contributing
+
+Arcforge is in active Open Beta. Contributions, bug reports, and ideas are welcome.
+
+- **Issues:** please include:
+  - Arcforge version
+  - OS version
+  - Laravel / PHP version
+  - Steps to reproduce
+- **Feature requests:** describe the workflow you’re trying to improve, not just a UI element you’d like to see.
+
+---
+
+### License
+
+See the `LICENSE` file for details.
