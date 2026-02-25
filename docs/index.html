@@ -14,5 +14,33 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // Wire download links from updates.json so the landing always shows the current version.
+      (function () {
+        var updatesUrl = 'updates.json';
+        fetch(updatesUrl, { cache: 'no-cache' })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (manifest) {
+            if (!manifest || !manifest.downloads || !manifest.downloads.length) return;
+            var win = manifest.downloads.find(function (d) { return d.os === 'windows' && (d.arch === 'x64' || !d.arch); });
+            var downloadUrl = (win && win.url) ? win.url : (manifest.changelogUrl || 'https://github.com/ysz7/Arcforge/releases/latest');
+            var version = manifest.latestVersion || '';
+            function apply() {
+              document.querySelectorAll('a[href*="releases"]').forEach(function (a) {
+                if (a.href.indexOf('github.com') !== -1 && a.href.indexOf('Arcforge') !== -1) {
+                  a.setAttribute('href', downloadUrl);
+                  if (version && (a.textContent.indexOf('Download') !== -1 || a.textContent.indexOf('Windows') !== -1)) {
+                    a.textContent = 'Download for Windows' + (version ? ' (' + version + ')' : '');
+                  }
+                }
+              });
+            }
+            apply();
+            setTimeout(apply, 500);
+            setTimeout(apply, 2000);
+          })
+          .catch(function () {});
+      })();
+    </script>
   </body>
 </html>
