@@ -1,7 +1,7 @@
 {
   "appName": "Arcforge",
   "latestVersion": "1.0.1",
-  "minimumSupportedVersion": "1.0.1",
+  "minimumSupportedVersion": "1.0.0",
   "downloads": [
     {
       "os": "windows",
