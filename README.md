@@ -14,9 +14,20 @@ Arcforge turns your backend into a navigable graph: controllers, services, model
 
 ### Screenshots
 
-| Graph view | Add blueprint | Add new logic |
-|------------|---------------|----------------|
-| ![Graph view](docs/arcforge-gallery/arcforge-graph-1.png) | ![Add blueprint](docs/arcforge-gallery/arcforge-modal-add-blueprint-2.png) | ![Add new logic](docs/arcforge-gallery/arcforge-add-new-logic-3.png) |
+<p align="center">
+  <strong>Graph view</strong><br>
+  <img src="docs/arcforge-gallery/arcforge-graph-1.png" alt="Graph view" width="720">
+</p>
+
+<p align="center">
+  <strong>Add blueprint</strong><br>
+  <img src="docs/arcforge-gallery/arcforge-modal-add-blueprint-2.png" alt="Add blueprint" width="720">
+</p>
+
+<p align="center">
+  <strong>Add new logic</strong><br>
+  <img src="docs/arcforge-gallery/arcforge-add-new-logic-3.png" alt="Add new logic" width="720">
+</p>
 
 ---
 
@@ -58,11 +69,8 @@ There are **no background services, telemetry, or tracking**.
 
 ### Download
 
-- **Latest Windows build (.zip):**  
-  `https://github.com/ysz7/Arcforge/releases/latest`
-
-- **Direct link for v1.0.0 (.zip):**  
-  `https://github.com/ysz7/Arcforge/releases/download/v1.0.0/Arcforge-1.0.0.zip`
+- **[Latest Windows build (.zip)](https://github.com/ysz7/Arcforge/releases/latest)**
+- **[Direct link for v1.0.1 (.zip)](https://github.com/ysz7/Arcforge/releases/download/v1.0.1/Arcforge-1.0.1.zip)**
 
 ---
 
@@ -88,22 +96,6 @@ There are **no background services, telemetry, or tracking**.
 
 ---
 
-### Roadmap (high level)
-
-> This is intentionally non-binding and can change as the beta evolves.
-
-- **Language / framework support**
-  - ✅ Laravel
-  - ⏳ Golang (planned)
-- **Graph improvements**
-  - Better grouping of modules / bounded contexts
-  - More granular edge types (read/write, sync/async, etc.)
-- **Developer workflow**
-  - Smarter navigation between graph nodes and code
-  - Improved search and filtering across large graphs
-
----
-
 ### Safety & limits in Open Beta
 
 - Arcforge focuses on **reading and visualizing** your codebase.
@@ -111,19 +103,6 @@ There are **no background services, telemetry, or tracking**.
 - For now, consider it a **companion for understanding and planning**, not a full-blown refactoring engine for massive production monoliths.
 
 If you run into edge cases or performance issues on large projects, please share feedback with project details (size, tech stack, symptoms).
-
----
-
-### Contributing
-
-Arcforge is in active Open Beta. Contributions, bug reports, and ideas are welcome.
-
-- **Issues:** please include:
-  - Arcforge version
-  - OS version
-  - Laravel / PHP version
-  - Steps to reproduce
-- **Feature requests:** describe the workflow you’re trying to improve, not just a UI element you’d like to see.
 
 ---
 
