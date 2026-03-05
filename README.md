@@ -1,5 +1,9 @@
 ## Arcforge
 
+[![Platform: Windows x64](https://img.shields.io/badge/platform-Windows%20x64-0078D6?logo=windows&logoColor=white)](https://github.com/ysz7/Arcforge)
+[![Backend: Laravel](https://img.shields.io/badge/backend-Laravel-FF2D20?logo=laravel&logoColor=white)](https://github.com/ysz7/Arcforge)
+[![OpenAPI JSON viewer](https://img.shields.io/badge/OpenAPI-JSON%20viewer-6BA539?logo=openapiinitiative&logoColor=white)](https://github.com/ysz7/Arcforge)
+
 **Graph-based IDE and architecture explorer for backend projects.**
 
 Arcforge turns your backend into a navigable graph: controllers, services, models, and their dependencies become nodes and edges you can explore, understand, and refactor with more confidence.
@@ -9,8 +13,7 @@ Arcforge turns your backend into a navigable graph: controllers, services, model
 - 📂 **Open any node to the real code** that powers it
 - 🧱 **Design and evolve architectures** without losing track of how everything connects
 
-> **Open Beta** · Windows desktop · Currently focused on **Laravel** backends.  
-> **Planned next language:** Golang.
+> **Open Beta** · Windows desktop · **Planned next language:** Golang.
 
 ### Screenshots
 
@@ -33,14 +36,10 @@ Arcforge turns your backend into a navigable graph: controllers, services, model
 
 ### What Arcforge is good for
 
-- **Architecture exploration**
-  - Understand unfamiliar Laravel projects quickly
-  - Onboard new team members with a visual map of the system
-- **Refactoring with context**
-  - See what depends on what before you touch code
-  - Avoid breaking hidden paths and side effects
-- **Communication**
-  - Use the graph to explain backend flows to other engineers, tech leads, and stakeholders
+- **Architecture exploration** — understand unfamiliar Laravel projects faster with a visual map of your system.
+- **Refactoring with context** — see what depends on what before you touch code and avoid hidden side effects.
+- **API contract exploration** — view OpenAPI (Swagger) JSON specs directly inside the app, next to the backend graph.
+- **Communication** — use the graph to explain backend flows to engineers, tech leads, and stakeholders.
 
 > **Important**  
 > The current Open Beta is best suited for **viewing and understanding projects**, especially small-to-medium codebases.  
@@ -52,10 +51,7 @@ Arcforge will **not modify your code automatically** during normal usage; it rea
 
 ### Status
 
-- **Stage:** Open Beta
-- **Platform:** Windows (x64)
-- **Supported stack:** Laravel (PHP)
-- **Next integration (planned):** Golang
+> **Open Beta** · **Windows (x64)** · **Laravel backend** · **OpenAPI JSON viewer (beta)** · **Next:** Golang
 
 Updates are distributed via:
 
@@ -70,31 +66,8 @@ There are **no background services, telemetry, or tracking**.
 ### Download
 
 - **[Latest Windows build (.zip)](https://github.com/ysz7/Arcforge/releases/latest)**
-- **[Direct link for v1.0.1 (.zip)](https://github.com/ysz7/Arcforge/releases/download/v1.0.1/Arcforge-1.0.1.zip)**
+- **[Direct link for v1.1.1 (.zip)](https://github.com/ysz7/Arcforge/releases/download/v1.1.1/Arcforge-1.1.1.zip)**
 
----
-
-### How it works (high level)
-
-1. **Scan & index**
-   - Point Arcforge at your Laravel project.
-   - The app parses controllers, services, models, and key routing / dependency information.
-
-2. **Build the graph**
-   - Nodes represent backend units (controllers, services, models, etc.).
-   - Edges describe relationships and call chains between those units.
-
-3. **Explore**
-   - Click through nodes to:
-     - see connections,
-     - trace paths across the graph,
-     - open the **actual code** behind a node in the built-in viewer.
-
-4. **Iterate on your architecture**
-   - Use the graph to plan refactors or new features.
-   - Keep mental overhead low by navigating visually rather than hunting through files.
-
----
 
 ### Safety & limits in Open Beta
 
