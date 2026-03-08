@@ -66,7 +66,7 @@ There are **no background services, telemetry, or tracking**.
 ### Download
 
 - **[Latest Windows build (.zip)](https://github.com/ysz7/Arcforge/releases/latest)**
-- **[Direct link for v1.1.1 (.zip)](https://github.com/ysz7/Arcforge/releases/download/v1.1.1/Arcforge-1.1.1.zip)**
+- **[Direct link for v1.2.0 (.zip)](https://github.com/ysz7/Arcforge/releases/download/v1.2.0/Arcforge-1.2.0.zip)**
 
 
 ### Safety & limits in Open Beta
