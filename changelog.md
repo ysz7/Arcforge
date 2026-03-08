@@ -1,11 +1,23 @@
 ## Arcforge desktop – Changelog
 
-### 1.1.1 – OpenAPI JSON viewer
+## 1.2.0 - ArcSpec
+
+- **ArcSpec adapter** — Added a new architecture-first adapter for describing backend architecture as connected nodes (domains, use cases, repositories, modules, microservices, etc.).
+- **Architecture blueprints** — Introduced ready-made blueprints for MVC, Clean Architecture, Modular Monolith flows. Blueprints are grouped, searchable, and configurable via the Forge modal.
+
+### Node management (ArcSpec)
+
+- **Entry nodes** - Support for multiple Entry nodes that can be created on the canvas; the primary `arch:entry` remains protected from deletion.
+- **Context menus** — Unified right-click menus for ArcSpec nodes and edges, including bulk delete for multiple selected nodes and safer deletion flows.
+- **Rename nodes** — Nodes in ArcSpec graphs can be renamed via a dedicated prompt, with changes persisted back into the `.json` architecture specification.
+
+
+### 1.1.1 - OpenAPI JSON viewer
 
 - **OpenAPI JSON viewer** to inspect and explore OpenAPI specifications directly inside Arcforge.
 - View and scroll through OpenAPI (Swagger) JSON definitions without leaving the app.
 
-### 1.0.1 – Redesign & performance
+### 1.0.1 - Redesign & performance
 
 - **Redesign** of the application.
 - **Fewer displayed connections** — the number of edges shown on the graph is reduced; the logic chain and behavior remain the same.
