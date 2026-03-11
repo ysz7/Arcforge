@@ -27,13 +27,8 @@ Arcforge turns your backend into a navigable graph: controllers, services, model
 </p>
 
 <p align="center">
-  <strong>Add blueprint</strong><br>
-  <img src="docs/arcforge-gallery/arcforge-modal-add-blueprint-2.png" alt="Add blueprint" width="720">
-</p>
-
-<p align="center">
-  <strong>Add new logic</strong><br>
-  <img src="docs/arcforge-gallery/arcforge-add-new-logic-3.png" alt="Add new logic" width="720">
+  <strong>Save as prompt</strong><br>
+  <img src="docs/arcforge-gallery/arcforge-save-as-promt.png" alt="Save as prompt" width="720">
 </p>
 
 ---
