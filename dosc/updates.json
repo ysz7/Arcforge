@@ -1,16 +1,16 @@
 {
   "appName": "Arcforge",
-  "latestVersion": "1.2.0",
+  "latestVersion": "1.3.0",
   "minimumSupportedVersion": "1.0.0",
   "downloads": [
     {
       "os": "windows",
       "arch": "x64",
-      "version": "1.2.0",
-      "url": "https://github.com/ysz7/Arcforge/releases/download/v1.2.0/Arcforge-1.2.0.zip",
+      "version": "1.3.0",
+      "url": "https://github.com/ysz7/Arcforge/releases/download/v1.3.0/Arcforge-1.3.0.zip",
       "size": 73400320,
-      "releaseDate": "2026-02-28"
+      "releaseDate": "2026-03-11"
     }
   ],
-  "changelogUrl": "https://github.com/ysz7/Arcforge/releases/tag/v1.2.0"
+  "changelogUrl": "https://github.com/ysz7/Arcforge/releases/tag/v1.3.0"
 }
