@@ -11,6 +11,7 @@
 
 ### Design update
 
+- **Application redesign** — Updated visual design of the desktop application.
 - **New landing page** — Fully redesigned website with updated layout, navigation, and plugin documentation.
 
 ---
