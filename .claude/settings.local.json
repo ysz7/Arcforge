@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cp -r \"C:/YSZ/PROJECTS/DEVELOPMENT/Arcforge/Arcforge-github/dosc-new/icons\" \"C:/YSZ/PROJECTS/DEVELOPMENT/Arcforge/Arcforge-github/docs/icons\" && echo \"done\")"
+    ]
+  }
+}

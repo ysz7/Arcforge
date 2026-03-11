@@ -1,0 +1,24 @@
+{
+  "id": "sdk-plugin-folder-template",
+  "name": "sdk-plugin-folder-template",
+  "version": "1.0.0",
+  "author": "YSZ7",
+  "description": "sdk-plugin-folder-template plugin for Arcforge",
+  "icon": "◻",
+  "parser": "parser.js",
+  "nodes": "nodes.js",
+  "accepts": "directory",
+  "fileTypes": [],
+  "canCreateNew": false,
+  "detectBy": [],
+  "capabilities": {
+    "openFileOnNodeClick": true,
+    "editNodes": false,
+    "addNodes": false,
+    "deleteNodes": false,
+    "addEdges": false,
+    "deleteEdges": false,
+    "saveGraph": false,
+    "exportPrompt": true
+  }
+}

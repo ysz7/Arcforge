@@ -1,5 +1,20 @@
 ## Arcforge desktop – Changelog
 
+## 1.3.0 - Plugins & Redesign
+
+### Plugin System
+
+- **Plugin SDK** — Introduced an open plugin system. Any language or framework can be supported by writing a plugin with three files: `manifest.json`, `nodes.js`, and `parser.js`.
+- **Laravel plugin** — Official plugin for visualizing Laravel projects: Models, Controllers, Routes, Views, Migrations and more.
+- **Plugin marketplace** — Plugin directory added to the repository. Community plugins can be shared and installed.
+- **Security** — Arcforge shows a security warning when loading any third-party plugin. Only install plugins from sources you trust.
+
+### Design update
+
+- **New landing page** — Fully redesigned website with updated layout, navigation, and plugin documentation.
+
+---
+
 ## 1.2.0 - ArcSpec
 
 - **ArcSpec adapter** — Added a new architecture-first adapter for describing backend architecture as connected nodes (domains, use cases, repositories, modules, microservices, etc.).

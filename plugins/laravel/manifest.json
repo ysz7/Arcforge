@@ -1,0 +1,24 @@
+{
+  "id": "laravel",
+  "name": "Laravel",
+  "version": "1.0.0",
+  "author": "ysz",
+  "description": "Visualize Laravel projects — Models, Controllers, Routes, Views, Migrations and more",
+  "icon": "L",
+  "parser": "parser.js",
+  "nodes": "nodes.js",
+  "accepts": "directory",
+  "fileTypes": [],
+  "canCreateNew": false,
+  "detectBy": ["artisan", "composer.json"],
+  "capabilities": {
+    "openFileOnNodeClick": true,
+    "editNodes": false,
+    "addNodes": false,
+    "deleteNodes": false,
+    "addEdges": false,
+    "deleteEdges": false,
+    "saveGraph": false,
+    "exportPrompt": true
+  }
+}

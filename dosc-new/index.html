@@ -504,7 +504,7 @@
     </a>
     <a href="https://github.com/ysz7/Arcforge" target="_blank" class="btn-ghost">View on GitHub →</a>
   </div>
-  <p class="hero-meta" id="hero-meta">Windows · Free · Open source</p>
+  <p class="hero-meta" id="hero-meta">Windows · Free</p>
   <div class="tags-row">
     <span class="tags-label">Plugins</span>
     <div class="tag"><span class="tag-dot" style="background:#2d6be4"></span>Arcspec</div>
@@ -712,7 +712,7 @@
       </div>
       <div class="fq">
         <button class="fq-btn" onclick="toggleFaq(this)">Which frameworks are supported?<div class="fq-ic">+</div></button>
-        <div class="fq-a">Out of the box: OpenAPI JSON and Arcspec Designer. Any other framework can be supported by installing a plugin. The system is open — anyone can write and share a parser.</div>
+        <div class="fq-a">Out of the box: Arcspec Designer. Any other framework can be supported by installing a plugin. The system is open — anyone can write and share a parser.</div>
       </div>
       <div class="fq">
         <button class="fq-btn" onclick="toggleFaq(this)">How do I build a plugin?<div class="fq-ic">+</div></button>
@@ -733,7 +733,7 @@
 <!-- CTA -->
 <div class="cta-box" id="download">
   <h2>Start seeing your backend.</h2>
-  <p>Free. Open source. No account needed.</p>
+  <p>Free. No account needed.</p>
   <a href="https://github.com/ysz7/Arcforge/releases/download/v1.2.0/Arcforge-1.2.0.zip" class="btn-white" id="cta-dl">
     <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M7 10.5L2.5 6H5.5V1.5H8.5V6H11.5L7 10.5Z"/><rect x="2" y="11.5" width="10" height="1" rx="0.5"/></svg>
     Download Arcforge
@@ -767,7 +767,7 @@ fetch('./updates.json')
     document.getElementById('cta-meta').textContent = `v${v} · Windows x64`;
     if (url) ['hero-dl','cta-dl','nav-dl'].forEach(id => { const el=document.getElementById(id); if(el) el.href=url; });
   })
-  .catch(()=>{ document.getElementById('hero-meta').textContent='Windows x64 · Free · Open source'; });
+  .catch(()=>{ document.getElementById('hero-meta').textContent='Windows x64 · Free'; });
 
 function toggleFaq(btn){
   const item=btn.closest('.fq');

@@ -1,19 +1,23 @@
-<h2><img src="docs/favicon.png" alt="Arcforge icon" width="32" align="left"> Arcforge</h2>
+<h2><img src="docs/icons/favicon.png" alt="Arcforge icon" width="32" align="left"> Arcforge</h2>
 
 [![Platform: Windows x64](https://img.shields.io/badge/platform-Windows%20x64-0078D6?logo=windows&logoColor=white)](https://github.com/ysz7/Arcforge)
-[![Backend: Laravel](https://img.shields.io/badge/backend-Laravel-FF2D20?logo=laravel&logoColor=white)](https://github.com/ysz7/Arcforge)
-[![OpenAPI JSON viewer](https://img.shields.io/badge/OpenAPI-JSON%20viewer-6BA539?logo=openapiinitiative&logoColor=white)](https://github.com/ysz7/Arcforge)
+[![Plugin: Laravel](https://img.shields.io/badge/plugin-Laravel-FF2D20?logo=laravel&logoColor=white)](https://github.com/ysz7/Arcforge/tree/main/plugins/laravel)
+[![Plugin SDK](https://img.shields.io/badge/Plugin-SDK-2d6be4)](https://github.com/ysz7/Arcforge/tree/main/SDK)
 
 **Graph-based IDE and architecture explorer for backend projects.**
 
 Arcforge turns your backend into a navigable graph: controllers, services, models, and their dependencies become nodes and edges you can explore, understand, and refactor with more confidence.
 
-- 🔍 **See your backend as a graph**, not as isolated files
-- 🧭 **Trace request flows** across controllers, services, and data layers
-- 📂 **Open any node to the real code** that powers it
-- 🧱 **Design and evolve architectures** without losing track of how everything connects
+- ⬡ **Graph-first backend view** — controllers, services, models, and relations as one navigable graph
+- `</>` **Open node, read code** — click any node to jump to the exact source file and line
+- ⟶ **Trace request flows** — follow a request from HTTP entry through middleware, services, to the database
+- ✦ **Design with Arcspec** — design architecture from scratch and export AI-ready prompts for any language
+- 🔌 **Plugin-powered** — every language adapter is a plugin; install official or community plugins, or build your own
+- 🛡 **Safer refactors** — explore all dependencies before touching code
 
-> **Open Beta** · Windows desktop · **Planned next language:** Golang.
+> **Open Beta** · Windows desktop · Plugin SDK open for community contributions
+
+---
 
 ### Screenshots
 
@@ -34,31 +38,31 @@ Arcforge turns your backend into a navigable graph: controllers, services, model
 
 ---
 
-### What Arcforge is good for
+### Plugins
 
-- **Architecture exploration** — understand unfamiliar Laravel projects faster with a visual map of your system.
-- **Refactoring with context** — see what depends on what before you touch code and avoid hidden side effects.
-- **API contract exploration** — view OpenAPI (Swagger) JSON specs directly inside the app, next to the backend graph.
-- **Communication** — use the graph to explain backend flows to engineers, tech leads, and stakeholders.
+Arcforge is built around a plugin system. A plugin is a folder with three files:
 
-> **Important**  
-> The current Open Beta is best suited for **viewing and understanding projects**, especially small-to-medium codebases.  
-> It is **not recommended** to rely on this version to edit or refactor **very large production projects** end-to-end.
+| File | Purpose |
+|---|---|
+| `manifest.json` | Metadata, `accepts` (directory/file), `capabilities` flags |
+| `nodes.js` | Node type definitions — shape, color, icon |
+| `parser.js` | `async parse(input)` — returns nodes and edges |
 
-Arcforge will **not modify your code automatically** during normal usage; it reads and indexes your project to build the graph.
+**Official plugins:**
+- [**Laravel**](https://github.com/ysz7/Arcforge/tree/main/plugins/laravel) — Models, Controllers, Routes, Views, Migrations
+- **Arcspec Designer** — free-form architecture design, exports AI-ready prompts (`.arcspec.json`)
+
+**Build your own:** grab the SDK templates and AI prompt from [`/SDK`](https://github.com/ysz7/Arcforge/tree/main/SDK).
+
+> ⚠️ Plugins run with full Node.js access to your file system. **Only install plugins from sources you trust.**
 
 ---
 
 ### Status
 
-> **Open Beta** · **Windows (x64)** · **Laravel backend** · **OpenAPI JSON viewer (beta)** · **Next:** Golang
+> **Open Beta** · **Windows (x64)** · **v1.3.0**
 
-Updates are distributed via:
-
-- GitHub Releases, and
-- a static `updates.json` manifest served from the Arcforge website.
-
-The desktop app simply checks the manifest on startup to see whether a newer version is available.  
+Updates are distributed via GitHub Releases and a static `updates.json` manifest checked on startup.
 There are **no background services, telemetry, or tracking**.
 
 ---
@@ -66,16 +70,15 @@ There are **no background services, telemetry, or tracking**.
 ### Download
 
 - **[Latest Windows build (.zip)](https://github.com/ysz7/Arcforge/releases/latest)**
-- **[Direct link for v1.2.0 (.zip)](https://github.com/ysz7/Arcforge/releases/download/v1.2.0/Arcforge-1.2.0.zip)**
+- **[Direct link for v1.3.0 (.zip)](https://github.com/ysz7/Arcforge/releases/download/v1.3.0/Arcforge-1.3.0.zip)**
 
+---
 
 ### Safety & limits in Open Beta
 
-- Arcforge focuses on **reading and visualizing** your codebase.
-- It is **safe to use for inspection** of existing projects.
-- For now, consider it a **companion for understanding and planning**, not a full-blown refactoring engine for massive production monoliths.
-
-If you run into edge cases or performance issues on large projects, please share feedback with project details (size, tech stack, symptoms).
+- Arcforge focuses on **reading and visualizing** your codebase — it will not modify your code automatically.
+- Best suited for **understanding and planning**, especially small-to-medium projects.
+- For very large production monoliths, performance may vary — share feedback with project details if you hit issues.
 
 ---
 
