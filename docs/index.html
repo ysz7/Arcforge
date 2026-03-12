@@ -568,6 +568,27 @@
       <span class="sec-tag">Plugin System</span>
       <h2 class="sec-h">Arcforge runs<br>on plugins.</h2>
       <p class="sec-p">A plugin is three files: <code style="font-family:'DM Mono',monospace;font-size:13px;background:var(--card);padding:2px 7px;border-radius:4px;border:1px solid var(--border)">manifest.json</code>, <code style="font-family:'DM Mono',monospace;font-size:13px;background:var(--card);padding:2px 7px;border-radius:4px;border:1px solid var(--border)">nodes.js</code>, <code style="font-family:'DM Mono',monospace;font-size:13px;background:var(--card);padding:2px 7px;border-radius:4px;border:1px solid var(--border)">parser.js</code>. Implement <code style="font-family:'DM Mono',monospace;font-size:13px;background:var(--card);padding:2px 7px;border-radius:4px;border:1px solid var(--border)">parse()</code>, return nodes and edges. That's the entire contract.</p>
+      <div style="margin-top:20px;margin-bottom:4px;">
+        <p style="font-size:13px;color:var(--text3);line-height:1.6;margin-bottom:8px;">Your <code style="font-family:'DM Mono',monospace;font-size:12px;background:var(--card);padding:1px 6px;border-radius:4px;border:1px solid var(--border)">parse(input)</code> receives the project root. Walk the files, read their source, and extract:</p>
+        <table style="width:100%;border-collapse:collapse;font-size:12.5px;color:var(--text3);font-family:'DM Mono',monospace;">
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:5px 8px 5px 0;color:var(--text2);font-weight:500">class / service definition</td>
+            <td style="padding:5px 0">→ <span style="color:var(--blue);font-weight:600">node</span></td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:5px 8px 5px 0;color:var(--text2);font-weight:500">import / require / use</td>
+            <td style="padding:5px 0">→ <span style="color:var(--blue);font-weight:600">edge</span> <span style="color:var(--text4)">("depends")</span></td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:5px 8px 5px 0;color:var(--text2);font-weight:500">Route::get(...)</td>
+            <td style="padding:5px 0">→ <span style="color:var(--blue);font-weight:600">edge</span> <span style="color:var(--text4)">("handles")</span></td>
+          </tr>
+          <tr>
+            <td style="padding:5px 8px 5px 0;color:var(--text2);font-weight:500">hasMany / belongsTo</td>
+            <td style="padding:5px 0">→ <span style="color:var(--blue);font-weight:600">edge</span> <span style="color:var(--text4)">(relation type)</span></td>
+          </tr>
+        </table>
+      </div>
       <div class="plug-items">
         <div class="pi">
           <div class="pi-ic">📁</div>
@@ -601,25 +622,44 @@
         <div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
         <span class="code-name">parser.js</span>
       </div>
-      <div class="code-body"><span class="ck">const</span> { node, edge } = <span class="cf">require</span>(<span class="cs">'./arcforge-sdk'</span>)
+      <div class="code-body"><span class="ck">const</span> fs   = <span class="cf">require</span>(<span class="cs">'fs'</span>).promises
+<span class="ck">const</span> path = <span class="cf">require</span>(<span class="cs">'path'</span>)
+<span class="ck">const</span> glob = <span class="cf">require</span>(<span class="cs">'fast-glob'</span>)
 
-<span class="cc">// Required export — return nodes + edges</span>
+<span class="cc">// What to parse:
+//  class / service definition  → node
+//  import / require / use      → edge ("depends")
+//  Route::get(...)             → edge ("handles")
+//  hasMany / belongsTo         → edge (relation type)</span>
+
 <span class="ck">exports</span>.<span class="cf">parse</span> = <span class="ck">async function</span> <span class="cf">parse</span>(input) {
-  <span class="ck">const</span> ctrl = <span class="cf">node</span>(<span class="cs">'controller'</span>, <span class="cs">'UserController'</span>, {
-    <span class="cp">filePath</span>: <span class="cs">'/src/UserController.js'</span>
-  })
-  <span class="ck">const</span> svc = <span class="cf">node</span>(<span class="cs">'service'</span>, <span class="cs">'UserService'</span>, {
-    <span class="cp">filePath</span>: <span class="cs">'/src/UserService.js'</span>
-  })
-  <span class="ck">const</span> e = <span class="cf">edge</span>(<span class="cs">'calls'</span>, ctrl.id, svc.id)
-  <span class="ck">return</span> { nodes: [ctrl, svc], edges: [e] }
+  <span class="ck">const</span> nodes = [], edges = [], map = {}
+
+  <span class="cc">// 1. find files</span>
+  <span class="ck">const</span> files = <span class="ck">await</span> <span class="cf">glob</span>(<span class="cs">'app/**/*.php'</span>, { <span class="cp">cwd</span>: input })
+
+  <span class="cc">// 2. class name → node</span>
+  <span class="ck">for</span> (<span class="ck">const</span> f <span class="ck">of</span> files) {
+    <span class="ck">const</span> src = <span class="ck">await</span> fs.<span class="cf">readFile</span>(path.<span class="cf">join</span>(input, f), <span class="cs">'utf8'</span>)
+    <span class="ck">const</span> name = src.<span class="cf">match</span>(<span class="cs">/class\s+(\w+)/</span>)?.[<span class="cs">1</span>]
+    <span class="ck">if</span> (!name) <span class="ck">continue</span>
+    <span class="ck">const</span> n = <span class="cf">node</span>(<span class="cs">'controller'</span>, name, { <span class="cp">filePath</span>: f })
+    nodes.<span class="cf">push</span>(n); map[name] = n.id
+  }
+
+  <span class="cc">// 3. "use Namespace\ClassName" → edge</span>
+  <span class="ck">for</span> (<span class="ck">const</span> f <span class="ck">of</span> files) {
+    <span class="ck">const</span> src = <span class="ck">await</span> fs.<span class="cf">readFile</span>(path.<span class="cf">join</span>(input, f), <span class="cs">'utf8'</span>)
+    <span class="ck">const</span> owner = src.<span class="cf">match</span>(<span class="cs">/class\s+(\w+)/</span>)?.[<span class="cs">1</span>]
+    <span class="ck">for</span> (<span class="ck">const</span> [, dep] <span class="ck">of</span> src.<span class="cf">matchAll</span>(<span class="cs">/use\s+[\w\\]+\\(\w+);/g</span>))
+      <span class="ck">if</span> (map[dep]) edges.<span class="cf">push</span>(<span class="cf">edge</span>(<span class="cs">'depends'</span>, map[owner], map[dep]))
+  }
+
+  <span class="ck">return</span> { nodes, edges }
 }
 
-<span class="cc">// Optional — open file on node click</span>
-<span class="ck">exports</span>.<span class="cf">onNodeClick</span> = <span class="ck">async</span> node => ({
-  <span class="cp">filePath</span>: node.filePath,
-  <span class="cp">language</span>: <span class="cs">'javascript'</span>
-})</div>
+<span class="cc">// open file on node click</span>
+<span class="ck">exports</span>.<span class="cf">onNodeClick</span> = <span class="ck">async</span> n => ({ <span class="cp">filePath</span>: n.filePath, <span class="cp">language</span>: <span class="cs">'php'</span> })</div>
     </div>
   </div>
 </section>
@@ -648,7 +688,7 @@
         <div><h3>Arcspec Designer</h3><div class="pc-auth">by Arcforge</div></div>
       </div>
       <p>Free-form architecture design. Draw nodes and connections. Export AI-ready prompts for any language.</p>
-      <div class="pc-foot"><span class="b-off">Official</span><span class="pc-ext">.arcspec.json</span></div>
+      <div class="pc-foot"><span class="b-off">Official</span><span class="pc-ext">.arcspec</span></div>
     </a>
     <a href="https://github.com/ysz7/Arcforge/tree/main/SDK" target="_blank" class="pc-build">
       <span>+</span>

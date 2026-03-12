@@ -43,9 +43,57 @@ Arcforge is built around a plugin system. A plugin is a folder with three files:
 | `nodes.js` | Node type definitions — shape, color, icon |
 | `parser.js` | `async parse(input)` — returns nodes and edges |
 
+#### What `parser.js` should extract — a concrete example
+
+Your `parse(input)` receives the project root path. Walk the source files, read them, and map code constructs to nodes and edges:
+
+| Source code construct | Maps to |
+|---|---|
+| Class / service / controller definition | A **node** |
+| `import` / `require` / `use` statement | An **edge** (`"depends"`) |
+| Route registration (`Route::get(...)`) | An **edge** (`"handles"`) |
+| ORM relationship (`hasMany`, `belongsTo`) | An **edge** with the relation type |
+
+```js
+const fs   = require('fs').promises;
+const path = require('path');
+const glob = require('fast-glob');
+
+exports.parse = async function parse(input) {
+  const nodes = [], edges = [], nodeMap = {};
+
+  // 1. Find all files you want to parse
+  const files = await glob('app/**/*.php', { cwd: input });
+
+  // 2. Read each file — extract class name → one node per class
+  for (const file of files) {
+    const src = await fs.readFile(path.join(input, file), 'utf8');
+    const name = src.match(/class\s+(\w+)/)?.[1];
+    if (!name) continue;
+
+    const n = node('controller', name, { filePath: file });
+    nodes.push(n);
+    nodeMap[name] = n.id;          // keep id for edge wiring below
+  }
+
+  // 3. Read again — extract "use" imports → one edge per dependency
+  for (const file of files) {
+    const src = await fs.readFile(path.join(input, file), 'utf8');
+    const owner = src.match(/class\s+(\w+)/)?.[1];
+    if (!owner || !nodeMap[owner]) continue;
+
+    for (const [, dep] of src.matchAll(/use\s+[\w\\]+\\(\w+);/g)) {
+      if (nodeMap[dep]) edges.push(edge('depends', nodeMap[owner], nodeMap[dep]));
+    }
+  }
+
+  return { nodes, edges };
+};
+```
+
 **Official plugins:**
 - [**Laravel**](https://github.com/ysz7/Arcforge/tree/main/plugins/laravel) — Models, Controllers, Routes, Views, Migrations
-- **Arcspec Designer** — free-form architecture design, exports AI-ready prompts (`.arcspec.json`)
+- **Arcspec Designer** — free-form architecture design, exports AI-ready prompts (`.arcspec`)
 
 **Build your own:** grab the SDK templates and AI prompt from [`/SDK`](https://github.com/ysz7/Arcforge/tree/main/SDK).
 
