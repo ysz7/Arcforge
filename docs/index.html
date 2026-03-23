@@ -491,7 +491,7 @@
   <span class="badge-icon-open-beta">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sparkles mr-1 h-3.5 w-3.5" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
   </span>
-  Open Beta</div>
+  Open Source</div>
   <h1>Visualize backend architecture<br><span class="light">as a living graph.</span></h1>
   <p class="hero-typing">
     <span class="typing-static">Create plugins for&nbsp;</span><span class="typing-word" id="typing-word"></span><span class="typing-cursor">|</span><span class="typing-static">&nbsp;easily with AI</span>
@@ -504,7 +504,7 @@
     </a>
     <a href="https://github.com/ysz7/Arcforge" target="_blank" class="btn-ghost">View on GitHub →</a>
   </div>
-  <p class="hero-meta" id="hero-meta">Windows · Free</p>
+  <p class="hero-meta" id="hero-meta">Windows · Free · Open Source</p>
   <div class="tags-row">
     <span class="tags-label">Plugins</span>
     <div class="tag"><span class="tag-dot" style="background:#2d6be4"></span>Arcspec</div>
@@ -773,12 +773,12 @@
 <!-- CTA -->
 <div class="cta-box" id="download">
   <h2>Start seeing your backend.</h2>
-  <p>Free. No account needed.</p>
+  <p>Free & Open Source. No account needed.</p>
   <a href="https://github.com/ysz7/Arcforge/releases/download/v1.2.0/Arcforge-1.2.0.zip" class="btn-white" id="cta-dl">
     <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M7 10.5L2.5 6H5.5V1.5H8.5V6H11.5L7 10.5Z"/><rect x="2" y="11.5" width="10" height="1" rx="0.5"/></svg>
     Download Arcforge
   </a>
-  <p class="cta-meta" id="cta-meta">Windows x64 · Free</p>
+  <p class="cta-meta" id="cta-meta">Windows x64 · Free · Open Source</p>
 </div>
 
 <footer>
@@ -803,11 +803,11 @@ fetch('./updates.json')
   .then(d => {
     const v = d.latestVersion;
     const url = d.downloads?.[0]?.url;
-    document.getElementById('hero-meta').textContent = `v${v} · Windows x64 · Free`;
-    document.getElementById('cta-meta').textContent = `v${v} · Windows x64`;
+    document.getElementById('hero-meta').textContent = `v${v} · Windows x64 · Free · Open Source`;
+    document.getElementById('cta-meta').textContent = `v${v} · Windows x64 · Open Source`;
     if (url) ['hero-dl','cta-dl','nav-dl'].forEach(id => { const el=document.getElementById(id); if(el) el.href=url; });
   })
-  .catch(()=>{ document.getElementById('hero-meta').textContent='Windows x64 · Free'; });
+  .catch(()=>{ document.getElementById('hero-meta').textContent='Windows x64 · Free · Open Source'; });
 
 function toggleFaq(btn){
   const item=btn.closest('.fq');
