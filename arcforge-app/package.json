@@ -1,0 +1,66 @@
+{
+  "name": "arcforge",
+  "version": "1.3.0",
+  "description": "Graph-First Backend IDE for Laravel",
+  "main": "dist/electron/main.js",
+  "author": "",
+  "license": "MIT",
+  "scripts": {
+    "copy:manifests": "node scripts/copyManifests.js",
+    "build": "tsc -p tsconfig.json && node scripts/copyManifests.js && vite build",
+    "build:core": "tsc -p tsconfig.json && node scripts/copyManifests.js",
+    "build:watch": "tsc -p tsconfig.json --watch",
+    "build:renderer": "vite build",
+    "start": "npm run build && electron .",
+    "dev": "npm run build && concurrently \"npm run build:watch\" \"vite build --watch\" \"wait-on dist/electron/main.js dist/renderer/index.html && electron .\"",
+    "lint": "eslint app --ext .ts,.tsx",
+    "dist:win": "npm run build && electron-builder --win nsis portable"
+  },
+  "dependencies": {
+    "@apidevtools/swagger-parser": "^10.1.1",
+    "@monaco-editor/react": "^4.6.0",
+    "@radix-ui/react-collapsible": "^1.0.3",
+    "@radix-ui/react-scroll-area": "^1.0.5",
+    "@radix-ui/react-separator": "^1.0.3",
+    "@radix-ui/react-tabs": "^1.0.4",
+    "@radix-ui/react-toolbar": "^1.0.4",
+    "chokidar": "^3.5.3",
+    "dagre": "^0.8.5",
+    "openapi-types": "^12.1.3",
+    "php-parser": "^3.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "reactflow": "^11.10.0",
+    "zustand": "^4.4.0"
+  },
+  "devDependencies": {
+    "@types/dagre": "^0.7.52",
+    "@types/node": "^20.10.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^4.2.0",
+    "concurrently": "^8.2.0",
+    "electron": "^35.7.5",
+    "electron-builder": "^26.8.1",
+    "rcedit": "^5.0.2",
+    "typescript": "^5.3.0",
+    "vite": "^7.3.1",
+    "wait-on": "^7.2.0"
+  },
+  "build": {
+    "appId": "com.arcforge.app",
+    "productName": "Arcforge",
+    "directories": {
+      "output": "release"
+    },
+    "afterPack": "./scripts/afterPack.js",
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "app/renderer/public/favicon.ico",
+      "signAndEditExecutable": false
+    }
+  }
+}

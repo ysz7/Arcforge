@@ -33,6 +33,23 @@ Arcforge turns your backend into a navigable graph: controllers, services, model
 
 ---
 
+### Open Source
+
+Arcforge is open source under the MIT license. The full application source code is available in this repository under [`arcforge-app/`](./arcforge-app).
+
+**Build from source:**
+
+```bash
+git clone https://github.com/ysz7/Arcforge.git
+cd Arcforge/arcforge-app
+npm install
+npm run dev
+```
+
+Requirements: Node.js 18+, Windows x64.
+
+---
+
 ### Plugins
 
 Arcforge is built around a plugin system. A plugin is a folder with three files:

@@ -1,2 +1,10 @@
 CLAUDE.md
 .claude/
+
+# arcforge-app build artifacts
+arcforge-app/node_modules/
+arcforge-app/dist/
+arcforge-app/release/
+arcforge-app/*.log
+arcforge-app/.env
+arcforge-app/.env.local

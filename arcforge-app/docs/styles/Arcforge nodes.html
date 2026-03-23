@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arcforge — Node Design System</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+background-color: #0c0c0e !important;
+color: #f0f0f2;
+font-family: ‘SF Mono’, ‘Fira Code’, ‘Cascadia Code’, monospace;
+min-height: 100vh;
+}
+
+body {
+background-color: #0c0c0e;
+background-image:
+linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+background-size: 28px 28px;
+}
+
+.wrapper {
+max-width: 960px;
+margin: 0 auto;
+padding: 48px 24px 80px;
+}
+
+.header { margin-bottom: 56px; }
+.header-label {
+font-size: 10px;
+letter-spacing: 0.18em;
+text-transform: uppercase;
+color: #3d3d4a;
+margin-bottom: 10px;
+}
+.header h1 {
+font-family: Georgia, serif;
+font-size: 36px;
+font-weight: 400;
+color: #f0f0f2;
+letter-spacing: -0.02em;
+}
+.header h1 span { color: #6b6b7a; font-style: italic; }
+.header p {
+margin-top: 14px;
+font-size: 12px;
+color: #6b6b7a;
+line-height: 1.7;
+max-width: 440px;
+}
+
+.section { margin-bottom: 48px; }
+.section-title {
+font-size: 10px;
+letter-spacing: 0.15em;
+text-transform: uppercase;
+color: #3d3d4a;
+margin-bottom: 16px;
+padding-bottom: 10px;
+border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.nodes-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+gap: 10px;
+}
+
+.node {
+background-color: #111114;
+border: 1px solid rgba(255,255,255,0.07);
+border-radius: 12px;
+padding: 14px 15px;
+cursor: pointer;
+position: relative;
+overflow: hidden;
+transition: background-color 0.2s, border-color 0.2s, transform 0.2s;
+}
+.node:hover {
+background-color: #18181d;
+border-color: rgba(255,255,255,0.13);
+transform: translateY(-2px);
+}
+
+.node-bar {
+position: absolute;
+top: 14px; bottom: 14px; left: 0;
+width: 2px;
+border-radius: 0 2px 2px 0;
+opacity: 0.65;
+transition: top 0.2s, bottom 0.2s, opacity 0.2s;
+}
+.node:hover .node-bar { top: 8px; bottom: 8px; opacity: 1; }
+
+.node-header {
+display: flex;
+align-items: center;
+gap: 9px;
+margin-bottom: 9px;
+}
+
+.node-icon {
+width: 26px; height: 26px;
+border-radius: 6px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 12px;
+flex-shrink: 0;
+border: 1px solid rgba(255,255,255,0.08);
+}
+
+.node-type {
+font-size: 9px;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+font-weight: 500;
+}
+
+.node-name {
+font-size: 12px;
+font-weight: 500;
+color: #f0f0f2;
+margin-bottom: 5px;
+}
+
+.node-desc {
+font-size: 10px;
+color: #6b6b7a;
+line-height: 1.55;
+}
+
+.node-handles {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-top: 11px;
+padding-top: 9px;
+border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.handle-group {
+display: flex;
+align-items: center;
+gap: 5px;
+}
+
+.handle {
+width: 6px; height: 6px;
+border-radius: 50%;
+opacity: 0.4;
+transition: opacity 0.2s, transform 0.2s;
+}
+.node:hover .handle { opacity: 0.9; transform: scale(1.3); }
+
+.handle-label {
+font-size: 9px;
+color: #3d3d4a;
+letter-spacing: 0.08em;
+text-transform: uppercase;
+}
+
+/* Canvas Preview */
+.canvas-wrap {
+background-color: #111114;
+border: 1px solid rgba(255,255,255,0.07);
+border-radius: 14px;
+padding: 20px;
+position: relative;
+overflow: hidden;
+min-height: 200px;
+}
+.canvas-wrap::before {
+content: ‘’;
+position: absolute; inset: 0;
+background-image:
+linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+background-size: 22px 22px;
+pointer-events: none;
+}
+.canvas-inner { position: relative; height: 180px; }
+.canvas-svg {
+position: absolute; inset: 0;
+width: 100%; height: 100%;
+pointer-events: none;
+}
+
+.p-node {
+position: absolute;
+background-color: #18181d;
+border: 1px solid rgba(255,255,255,0.09);
+border-radius: 9px;
+padding: 7px 11px;
+font-size: 10px;
+color: #f0f0f2;
+white-space: nowrap;
+z-index: 1;
+}
+.p-bar {
+position: absolute;
+top: 7px; bottom: 7px; left: 0;
+width: 2px;
+border-radius: 0 2px 2px 0;
+opacity: 0.7;
+}
+.p-type {
+font-size: 8px;
+text-transform: uppercase;
+letter-spacing: 0.1em;
+opacity: 0.6;
+margin-bottom: 2px;
+}
+
+/* Edges Demo */
+.edges-wrap {
+background-color: #111114;
+border: 1px solid rgba(255,255,255,0.07);
+border-radius: 14px;
+padding: 24px 20px;
+}
+.edge-row {
+display: flex;
+align-items: center;
+gap: 10px;
+margin-bottom: 14px;
+}
+.edge-row:last-child { margin-bottom: 0; }
+.edge-tag {
+font-size: 9px;
+letter-spacing: 0.08em;
+text-transform: uppercase;
+color: #6b6b7a;
+width: 75px;
+flex-shrink: 0;
+}
+.mini-node {
+padding: 4px 9px;
+background-color: #18181d;
+border: 1px solid rgba(255,255,255,0.09);
+border-radius: 6px;
+font-size: 10px;
+color: #9999aa;
+white-space: nowrap;
+flex-shrink: 0;
+}
+.e-dot {
+width: 6px; height: 6px;
+border-radius: 50%;
+flex-shrink: 0;
+}
+.e-line {
+flex: 1;
+height: 1px;
+position: relative;
+overflow: hidden;
+}
+.e-solid { background: currentColor; height: 100%; }
+.e-dash {
+height: 100%;
+background: repeating-linear-gradient(
+90deg,
+currentColor 0, currentColor 6px,
+transparent 6px, transparent 12px
+);
+animation: dash 0.8s linear infinite;
+}
+@keyframes dash {
+from { background-position: 0 0; }
+to   { background-position: 24px 0; }
+}
+
+/* Chips */
+.chips { display: flex; flex-wrap: wrap; gap: 7px; }
+.chip {
+display: flex; align-items: center; gap: 7px;
+background-color: #111114;
+border: 1px solid rgba(255,255,255,0.07);
+border-radius: 7px;
+padding: 5px 10px;
+font-size: 10px;
+color: #9999aa;
+}
+.chip-dot {
+width: 7px; height: 7px;
+border-radius: 50%;
+flex-shrink: 0;
+}
+
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(10px); }
+to   { opacity: 1; transform: translateY(0); }
+}
+.section { animation: fadeUp 0.4s ease both; }
+.section:nth-child(1) { animation-delay: 0.0s; }
+.section:nth-child(2) { animation-delay: 0.07s; }
+.section:nth-child(3) { animation-delay: 0.14s; }
+.section:nth-child(4) { animation-delay: 0.21s; }
+.section:nth-child(5) { animation-delay: 0.28s; }
+.section:nth-child(6) { animation-delay: 0.35s; }
+.section:nth-child(7) { animation-delay: 0.42s; }
+.section:nth-child(8) { animation-delay: 0.49s; }
+</style>
+
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="header">
+    <div class="header-label">Arcforge · Node Design System</div>
+    <h1>Arcspec <span>Node Library</span></h1>
+    <p>Visual reference for all node types. Language agnostic, AI-ready architecture blocks.</p>
+  </div>
+
+  
+
+  <!-- Entry -->
+
+  <div class="section">
+    <div class="section-title">Entry Layer</div>
+    <div class="nodes-grid">
+      <div class="node">
+        <div class="node-bar" style="background:#4a9eff"></div>
+        <div class="node-header">
+          <div class="node-icon" style="background:rgba(74,158,255,0.1);border-color:rgba(74,158,255,0.18)">⌘</div>
+          <div class="node-type" style="color:#4a9eff">Controller</div>
+        </div>
+        <div class="node-name">OrderController</div>
+        <div class="node-desc">Accepts HTTP request, delegates to service. No business logic.</div>
+        <div class="node-handles">
+          <div class="handle-group"><div class="handle" style="background:#4a9eff"></div><span class="handle-label">in</span></div>
+          <div class="handle-group"><span class="handle-label">out</span><div class="handle" style="background:#4a9eff"></div></div>
+        </div>
+      </div>
+      <div class="node">
+        <div class="node-bar" style="background:#94a3b8"></div>
+        <div class="node-header">
+          <div class="node-icon" style="background:rgba(148,163,184,0.1);border-color:rgba(148,163,184,0.18)">⇥</div>
+          <div class="node-type" style="color:#94a3b8">Middleware</div>
+        </div>
+        <div class="node-name">AuthMiddleware</div>
+        <div class="node-desc">Intercepts before controller. Auth, throttle, CORS, logging.</div>
+        <div class="node-handles">
+          <div class="handle-group"><div class="handle" style="background:#94a3b8"></div><span class="handle-label">in</span></div>
+          <div class="handle-group"><span class="handle-label">out</span><div class="handle" style="background:#94a3b8"></div></div>
+        </div>
+      </div>
+      <div class="node">
+        <div class="node-bar" style="background:#a78bfa"></div>
+        <div class="node-header">
+          <div class="node-icon" style="background:rgba(167,139,250,0.1);border-color:rgba(167,139,250,0.18)">✦</div>
+          <div class="node-type" style="color:#a78bfa">Request</div>
+        </div>
+        <div class="node-name">CreateOrderRequest</div>
+        <div class="node-desc">Validates and transforms input before business logic.</div>
+        <div class="node-handles">
+          <div class="handle-group"><div class="handle" style="background:#a78bfa"></div><span class="handle-label">in</span></div>
+          <div class="handle-group"><span class="handle-label">out</span><div class="handle" style="background:#a78bfa"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Business Logic -->
+
+  <div class="section">
+    <div class="section-title">Business Logic Layer</div>
+    <div class="nodes-grid">
+      <div class="node">
+        <div class="node-bar" style="background:#a78bfa"></div>
+        <div class="node-header">
+          <div class="node-icon" style="background:rgba(167,139,250,0.1);border-color:rgba(167,139,250,0.18)">◈</div>
+          <div class="node-type" style="color:#a78bfa">UseCase</div>
+        </div>
+        <div class="node-name">CreateOrderUseCase</div>
+        <div class="node-desc">Single business scenario. Orchestrates entities, repos, events.</div>
+        <div class="node-handles">
+          <div class="handle-group"><div class="handle" style="background:#a78bfa"></div><span class="handle-label">in</span></div>
+          <div class="handle-group"><span class="handle-label">out</span><div class="handle" style="background:#a78bfa"></div></div>
+        </div>
+      </div>
+      <div class="node">
+        <div class="node-bar" style="background:#34d399"></div>
+        <div class="node-header">
+          <div class="node-icon" style="background:rgba(52,211,153,0.1);border-color:rgba(52,211,153,0.18)">⬡</div>
+          <div class="node-type" style="color:#34d399">Service</div>
+        </div>
+        <div class="node-name">OrderService</div>
+        <div class="node-desc">Reusable business logic. Called from multiple use cases.</div>
+        <div class="node-handles">
+          <div class="handle-group"><div class="handle" style="background:#34d399"></div><span class="handle-label">in</span></div>
+          <div class="handle-group"><span class="handle-label">out</span><div class="handle" style="background:#34d399"></div></div>
+        </div>
+      </div>
+      <div class="node">
+        <div class="node-bar" style="background:#c084fc"></div>
+        <div class="node-header">
+          <div class="node-icon" style="background:rgba(192,132,252,0.1);border-color:rgba(192,132,252,0.18)">◻</div>
+          <div class="node-type" style="color:#c084fc">Interface</div>
+        </div>
+        <div class="node-name">OrderRepositoryInterface</div>
+        <div class="node-desc">Contract. Business depends on this, never on implementation.</div>
+        <div class="node-handles">
+          <div class="handle-group"><div class="handle" style="background:#c084fc"></div><span class="handle-label">in</span></div>
+          <div class="handle-group"><span class="handle-label">out</span><div class="handle" style="background:#c084fc"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Domain -->
+
+  <div class="section">
+    <div class="section-title">Domain Layer</div>
+    <div class="nodes-grid">
+      <div class="node">
+        <div class="node-bar" style="background:#f472b6"></div>
+        <div class="node-header">
+          <div class="node-icon" style="background:rgba(244,114,182,0.1);border-color:rgba(244,114,182,0.18)">◉</div>
+          <div class="node-type" style="color:#f472b6">Entity</div>
+        </div>
+        <div class="node-name">Order</div>
+        <div class="node-desc">Domain object with unique identity. Contains business rules.</div>
+        <div class="node-handles">
+          <div class="handle-group"><div class="handle" style="background:#f472b6"></div><span class="handle-label">in</span></div>
+          <div class="handle-group"><span class="handle-label">out</span><div class="handle" style="background:#f472b6"></div></div>
+        </div>
+      </div>
+      <div class="node">
+        <div class="node-bar" style="background:#86efac"></div>
+        <div class="node-header">
+          <div class="node-icon" style="background:rgba(134,239,172,0.1);border-color:rgba(134,239,172,0.18)">◧</div>
+          <div class="node-type" style="color:#86efac">ValueObject</div>
+        </div>
+        <div class="node-name">Money</div>
+        <div class="node-desc">Immutable, no identity. Defined purely by its value.</div>
+        <div class="node-handles">
+          <div class="handle-group"><div class="handle" style="background:#86efac"></div><span class="handle-label">in</span></div>
+          <div class="handle-group"><span class="handle-label">out</span><div class="handle" style="background:#86efac"></div></div>
+        </div>
+      </div>
+      <div class="node">
+        <div class="node-bar" style="background:#facc15"></div>
+        <div class="node-header">
+          <div class="node-icon" style="background:rgba(250,204,21,0.1);border-color:rgba(250,204,21,0.18)">⚡</div>
+          <div class="node-type" style="color:#facc15">DomainEvent</div>
+        </div>
+        <div class="node-name">OrderCreated</div>
+        <div class="node-desc">Something happened. Triggers listeners and side effects.</div>
+        <div class="node-handles">
+          <div class="handle-group"><div class="handle" style="background:#facc15"></div><span class="handle-label">in</span></div>
+          <div class="handle-group"><span class="handle-label">out</span><div class="handle" style="background:#facc15"></div></div>
+        </div>
+      </div>
+      <div class="node">
+        <div class="node-bar" style="background:#fda4af"></div>
+        <div class="node-header">
+          <div class="node-icon" style="background:rgba(253,164,175,0.1);border-color:rgba(253,164,175,0.18)">⬖</div>
+          <div class="node-type" style="color:#fda4af">Policy</div>
+        </div>
+        <div class="node-name">DiscountPolicy</div>
+        <div class="node-desc">Encapsulates a business rule. Returns bool or throws.</div>
+        <div class="node-handles">
+          <div class="handle-group"><div class="handle" style="background:#fda4af"></div><span class="handle-label">in</span></div>
+          <div class="handle-group"><span class="handle-label">out</span><div class="handle" style="background:#fda4af"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Layer -->
+
+  <div class="section">
+    <div class="section-title">Data Layer</div>
+    <div class="nodes-grid">
+      <div class="node">
+        <div class="node-bar" style="background:#fb923c"></div>
+        <div class="node-header">
+          <div class="node-icon" style="background:rgba(251,146,60,0.1);border-color:rgba(251,146,60,0.18)">⊞</div>
+          <div class="node-type" style="color:#fb923c">Repository</div>
+        </div>
+        <div class="node-name">EloquentOrderRepository</div>
+        <div class="node-desc">Implements interface. Handles all DB interaction for entity.</div>
+        <div class="node-handles">
+          <div class="handle-group"><div class="handle" style="background:#fb923c"></div><span class="handle-label">in</span></div>
+          <div class="handle-group"><span class="handle-label">out</span><div class="handle" style="background:#fb923c"></div></div>
+        </div>
+      </div>
+      <div class="node">
+        <div class="node-bar" style="background:#f472b6"></div>
+        <div class="node-header">
+          <div class="node-icon" style="background:rgba(244,114,182,0.1);border-color:rgba(244,114,182,0.18)">⊟</div>
+          <div class="node-type" style="color:#f472b6">Model</div>
+        </div>
+        <div class="node-name">OrderModel</div>
+        <div class="node-desc">ORM model. Maps database table. Used only in repository.</div>
+        <div class="node-handles">
+          <div class="handle-group"><div class="handle" style="background:#f472b6"></div><span class="handle-label">in</span></div>
+          <div class="handle-group"><span class="handle-label">out</span><div class="handle" style="background:#f472b6"></div></div>
+        </div>
+      </div>
+      <div class="node">
+        <div class="node-bar" style="background:#22d3ee"></div>
+        <div class="node-header">
+          <div class="node-icon" style="background:rgba(34,211,238,0.1);border-color:rgba(34,211,238,0.18)">▣</div>
+          <div class="node-type" style="color:#22d3ee">Database</div>
+        </div>
+        <div class="node-name">PostgreSQL</div>
+        <div class="node-desc">Physical storage. Postgres, MySQL, MongoDB, SQLite.</div>
+        <div class="node-handles">
+          <div class="handle-group"><div class="handle" style="background:#22d3ee"></div><span class="handle-label">in</span></div>
+          <div class="handle-group"><span class="handle-label">out</span><div class="handle" style="background:#22d3ee"></div></div>
+        </div>
+      </div>
+      <div class="node">
+        <div class="node-bar" style="background:#f87171"></div>
+        <div class="node-header">
+          <div class="node-icon" style="background:rgba(248,113,113,0.1);border-color:rgba(248,113,113,0.18)">⚙</div>
+          <div class="node-type" style="color:#f87171">Cache</div>
+        </div>
+        <div class="node-name">Redis</div>
+        <div class="node-desc">Cache layer before DB. Reduces load for frequent reads.</div>
+        <div class="node-handles">
+          <div class="handle-group"><div class="handle" style="background:#f87171"></div><span class="handle-label">in</span></div>
+          <div class="handle-group"><span class="handle-label">out</span><div class="handle" style="background:#f87171"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Infrastructure -->
+
+  <div class="section">
+    <div class="section-title">Infrastructure Layer</div>
+    <div class="nodes-grid">
+      <div class="node">
+        <div class="node-bar" style="background:#f87171"></div>
+        <div class="node-header">
+          <div class="node-icon" style="background:rgba(248,113,113,0.1);border-color:rgba(248,113,113,0.18)">⇌</div>
+          <div class="node-type" style="color:#f87171">Queue</div>
+        </div>
+        <div class="node-name">RabbitMQ</div>
+        <div class="node-desc">Message broker. Decouples producers from consumers.</div>
+        <div class="node-handles">
+          <div class="handle-group"><div class="handle" style="background:#f87171"></div><span class="handle-label">in</span></div>
+          <div class="handle-group"><span class="handle-label">out</span><div class="handle" style="background:#f87171"></div></div>
+        </div>
+      </div>
+      <div class="node">
+        <div class="node-bar" style="background:#facc15"></div>
+        <div class="node-header">
+          <div class="node-icon" style="background:rgba(250,204,21,0.1);border-color:rgba(250,204,21,0.18)">↻</div>
+          <div class="node-type" style="color:#facc15">Job</div>
+        </div>
+        <div class="node-name">SendConfirmationJob</div>
+        <div class="node-desc">Background task dispatched to queue. Runs async.</div>
+        <div class="node-handles">
+          <div class="handle-group"><div class="handle" style="background:#facc15"></div><span class="handle-label">in</span></div>
+          <div class="handle-group"><span class="handle-label">out</span><div class="handle" style="background:#facc15"></div></div>
+        </div>
+      </div>
+      <div class="node">
+        <div class="node-bar" style="background:#fda4af"></div>
+        <div class="node-header">
+          <div class="node-icon" style="background:rgba(253,164,175,0.1);border-color:rgba(253,164,175,0.18)">↗</div>
+          <div class="node-type" style="color:#fda4af">ExternalAPI</div>
+        </div>
+        <div class="node-name">StripeAPI</div>
+        <div class="node-desc">Third-party integration. Payments, SMS, maps, analytics.</div>
+        <div class="node-handles">
+          <div class="handle-group"><div class="handle" style="background:#fda4af"></div><span class="handle-label">in</span></div>
+          <div class="handle-group"><span class="handle-label">out</span><div class="handle" style="background:#fda4af"></div></div>
+        </div>
+      </div>
+      <div class="node">
+        <div class="node-bar" style="background:#86efac"></div>
+        <div class="node-header">
+          <div class="node-icon" style="background:rgba(134,239,172,0.1);border-color:rgba(134,239,172,0.18)">✉</div>
+          <div class="node-type" style="color:#86efac">Mailer</div>
+        </div>
+        <div class="node-name">OrderMailer</div>
+        <div class="node-desc">Sends email notifications triggered by events or jobs.</div>
+        <div class="node-handles">
+          <div class="handle-group"><div class="handle" style="background:#86efac"></div><span class="handle-label">in</span></div>
+          <div class="handle-group"><span class="handle-label">out</span><div class="handle" style="background:#86efac"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Connections
+
+  <div class="section">
+    <div class="section-title">Connection Types</div>
+    <div class="edges-wrap">
+      <div class="edge-row">
+        <div class="edge-tag">calls</div>
+        <div class="mini-node">Controller</div>
+        <div class="e-dot" style="background:#4a9eff"></div>
+        <div class="e-line" style="color:#4a9eff"><div class="e-solid"></div></div>
+        <div class="e-dot" style="background:#4a9eff"></div>
+        <div class="mini-node">Service</div>
+      </div>
+      <div class="edge-row">
+        <div class="edge-tag">implements</div>
+        <div class="mini-node">Repository</div>
+        <div class="e-dot" style="background:#c084fc"></div>
+        <div class="e-line" style="color:rgba(192,132,252,0.45)"><div class="e-solid"></div></div>
+        <div class="e-dot" style="background:#c084fc"></div>
+        <div class="mini-node">Interface</div>
+      </div>
+      <div class="edge-row">
+        <div class="edge-tag">emits</div>
+        <div class="mini-node">UseCase</div>
+        <div class="e-dot" style="background:#facc15"></div>
+        <div class="e-line" style="color:rgba(250,204,21,0.55)"><div class="e-dash"></div></div>
+        <div class="e-dot" style="background:#facc15"></div>
+        <div class="mini-node">DomainEvent</div>
+      </div>
+      <div class="edge-row">
+        <div class="edge-tag">dispatches</div>
+        <div class="mini-node">Listener</div>
+        <div class="e-dot" style="background:#f87171"></div>
+        <div class="e-line" style="color:rgba(248,113,113,0.55)"><div class="e-dash"></div></div>
+        <div class="e-dot" style="background:#f87171"></div>
+        <div class="mini-node">Job / Queue</div>
+      </div>
+      <div class="edge-row">
+        <div class="edge-tag">reads/writes</div>
+        <div class="mini-node">Repository</div>
+        <div class="e-dot" style="background:#22d3ee"></div>
+        <div class="e-line" style="color:#22d3ee"><div class="e-solid"></div></div>
+        <div class="e-dot" style="background:#22d3ee"></div>
+        <div class="mini-node">Database</div>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- Colors -->
+
+  <div class="section">
+    <div class="section-title">Color System</div>
+    <div class="chips">
+      <div class="chip"><div class="chip-dot" style="background:#4a9eff"></div>Controller</div>
+      <div class="chip"><div class="chip-dot" style="background:#34d399"></div>Service</div>
+      <div class="chip"><div class="chip-dot" style="background:#a78bfa"></div>UseCase</div>
+      <div class="chip"><div class="chip-dot" style="background:#fb923c"></div>Repository</div>
+      <div class="chip"><div class="chip-dot" style="background:#f472b6"></div>Entity / Model</div>
+      <div class="chip"><div class="chip-dot" style="background:#facc15"></div>Event / Job</div>
+      <div class="chip"><div class="chip-dot" style="background:#94a3b8"></div>Middleware</div>
+      <div class="chip"><div class="chip-dot" style="background:#22d3ee"></div>Database</div>
+      <div class="chip"><div class="chip-dot" style="background:#f87171"></div>Queue / Cache</div>
+      <div class="chip"><div class="chip-dot" style="background:#c084fc"></div>Interface</div>
+      <div class="chip"><div class="chip-dot" style="background:#86efac"></div>ValueObject</div>
+      <div class="chip"><div class="chip-dot" style="background:#fda4af"></div>ExternalAPI</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

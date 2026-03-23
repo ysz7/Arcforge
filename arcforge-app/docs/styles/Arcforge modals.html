@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arcforge — Modal Design System</title>
+<style>
+
+/* ============================================================
+ARCFORGE — MODAL DESIGN SYSTEM
+Copy any block below and apply to your modals
+============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+background-color: #0c0c0e;
+color: #f0f0f2;
+font-family: ‘SF Mono’, ‘Fira Code’, ‘Cascadia Code’, monospace;
+min-height: 100vh;
+}
+
+body {
+background-image:
+linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+background-size: 28px 28px;
+}
+
+/* ── DEMO PAGE LAYOUT ─────────────────────────────────────── */
+.demo-page {
+padding: 48px 24px 80px;
+max-width: 860px;
+margin: 0 auto;
+}
+
+.page-label {
+font-size: 10px;
+letter-spacing: 0.18em;
+text-transform: uppercase;
+color: #3d3d4a;
+margin-bottom: 10px;
+}
+
+.page-title {
+font-family: Georgia, serif;
+font-size: 32px;
+font-weight: 400;
+color: #f0f0f2;
+letter-spacing: -0.02em;
+margin-bottom: 8px;
+}
+.page-title span { color: #6b6b7a; font-style: italic; }
+
+.page-desc {
+font-size: 12px;
+color: #6b6b7a;
+line-height: 1.7;
+margin-bottom: 48px;
+max-width: 480px;
+}
+
+.section { margin-bottom: 48px; }
+.section-title {
+font-size: 10px;
+letter-spacing: 0.15em;
+text-transform: uppercase;
+color: #3d3d4a;
+margin-bottom: 20px;
+padding-bottom: 10px;
+border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.trigger-row {
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+margin-bottom: 0;
+}
+
+/* ============================================================
+── BUTTON STYLES (reusable) ─────────────────────────────
+============================================================ */
+
+.btn {
+display: inline-flex;
+align-items: center;
+gap: 7px;
+padding: 9px 16px;
+border-radius: 8px;
+font-family: inherit;
+font-size: 11px;
+font-weight: 500;
+letter-spacing: 0.03em;
+cursor: pointer;
+border: 1px solid transparent;
+transition: background-color 0.18s, border-color 0.18s, transform 0.15s, box-shadow 0.18s;
+outline: none;
+white-space: nowrap;
+}
+.btn:active { transform: scale(0.97); }
+
+/* Primary */
+.btn-primary {
+background-color: #f0f0f2;
+color: #0c0c0e;
+border-color: #f0f0f2;
+}
+.btn-primary:hover {
+background-color: #d8d8dc;
+border-color: #d8d8dc;
+}
+
+/* Secondary */
+.btn-secondary {
+background-color: rgba(255,255,255,0.05);
+color: #9999aa;
+border-color: rgba(255,255,255,0.09);
+}
+.btn-secondary:hover {
+background-color: rgba(255,255,255,0.09);
+border-color: rgba(255,255,255,0.15);
+color: #f0f0f2;
+}
+
+/* Ghost */
+.btn-ghost {
+background-color: transparent;
+color: #6b6b7a;
+border-color: transparent;
+}
+.btn-ghost:hover {
+background-color: rgba(255,255,255,0.05);
+color: #f0f0f2;
+}
+
+/* Danger */
+.btn-danger {
+background-color: rgba(248,113,113,0.1);
+color: #f87171;
+border-color: rgba(248,113,113,0.2);
+}
+.btn-danger:hover {
+background-color: rgba(248,113,113,0.18);
+border-color: rgba(248,113,113,0.35);
+}
+
+/* Accent variants */
+.btn-blue   { background-color: rgba(74,158,255,0.1);  color: #4a9eff; border-color: rgba(74,158,255,0.2); }
+.btn-blue:hover   { background-color: rgba(74,158,255,0.18); border-color: rgba(74,158,255,0.35); }
+.btn-green  { background-color: rgba(52,211,153,0.1);  color: #34d399; border-color: rgba(52,211,153,0.2); }
+.btn-green:hover  { background-color: rgba(52,211,153,0.18); border-color: rgba(52,211,153,0.35); }
+.btn-purple { background-color: rgba(167,139,250,0.1); color: #a78bfa; border-color: rgba(167,139,250,0.2); }
+.btn-purple:hover { background-color: rgba(167,139,250,0.18); border-color: rgba(167,139,250,0.35); }
+
+.btn-sm { padding: 6px 12px; font-size: 10px; border-radius: 6px; }
+.btn-lg { padding: 12px 22px; font-size: 13px; border-radius: 10px; }
+
+/* ============================================================
+── OVERLAY ──────────────────────────────────────────────
+============================================================ */
+
+.modal-overlay {
+position: fixed;
+inset: 0;
+background-color: rgba(6, 6, 8, 0.75);
+backdrop-filter: blur(6px);
+-webkit-backdrop-filter: blur(6px);
+z-index: 100;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 20px;
+opacity: 0;
+pointer-events: none;
+transition: opacity 0.22s ease;
+}
+.modal-overlay.open {
+opacity: 1;
+pointer-events: all;
+}
+
+/* ============================================================
+── BASE MODAL ───────────────────────────────────────────
+============================================================ */
+
+.modal {
+background-color: #111114;
+border: 1px solid rgba(255,255,255,0.09);
+border-radius: 16px;
+width: 100%;
+max-width: 480px;
+position: relative;
+overflow: hidden;
+transform: translateY(12px) scale(0.98);
+transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s ease;
+opacity: 0;
+box-shadow:
+0 0 0 1px rgba(255,255,255,0.04) inset,
+0 24px 64px rgba(0,0,0,0.7),
+0 4px 16px rgba(0,0,0,0.4);
+}
+.modal-overlay.open .modal {
+transform: translateY(0) scale(1);
+opacity: 1;
+}
+
+/* Top accent line */
+.modal-accent {
+position: absolute;
+top: 0; left: 15%; right: 15%;
+height: 1px;
+}
+
+/* ── MODAL HEADER ─────────────────────── */
+.modal-header {
+display: flex;
+align-items: flex-start;
+justify-content: space-between;
+padding: 20px 20px 0;
+gap: 12px;
+}
+
+.modal-header-left {
+display: flex;
+align-items: center;
+gap: 11px;
+}
+
+.modal-icon {
+width: 34px; height: 34px;
+border-radius: 9px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 15px;
+flex-shrink: 0;
+border: 1px solid rgba(255,255,255,0.08);
+}
+
+.modal-title-wrap {}
+.modal-label {
+font-size: 9px;
+letter-spacing: 0.14em;
+text-transform: uppercase;
+color: #3d3d4a;
+margin-bottom: 3px;
+}
+.modal-title {
+font-size: 15px;
+font-weight: 600;
+color: #f0f0f2;
+letter-spacing: -0.01em;
+line-height: 1.2;
+}
+
+.modal-close {
+width: 28px; height: 28px;
+border-radius: 7px;
+background: transparent;
+border: 1px solid transparent;
+color: #6b6b7a;
+font-size: 14px;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+flex-shrink: 0;
+transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+font-family: inherit;
+margin-top: 2px;
+}
+.modal-close:hover {
+background-color: rgba(255,255,255,0.06);
+border-color: rgba(255,255,255,0.1);
+color: #f0f0f2;
+}
+
+/* ── MODAL BODY ───────────────────────── */
+.modal-body {
+padding: 16px 20px 20px;
+}
+
+.modal-desc {
+font-size: 12px;
+color: #6b6b7a;
+line-height: 1.65;
+margin-bottom: 18px;
+}
+
+/* ── MODAL DIVIDER ────────────────────── */
+.modal-divider {
+height: 1px;
+background: rgba(255,255,255,0.06);
+margin: 0 20px;
+}
+
+/* ── MODAL FOOTER ─────────────────────── */
+.modal-footer {
+display: flex;
+align-items: center;
+justify-content: flex-end;
+gap: 8px;
+padding: 14px 20px;
+}
+.modal-footer.space-between {
+justify-content: space-between;
+}
+
+/* ============================================================
+── FORM ELEMENTS ────────────────────────────────────────
+============================================================ */
+
+.form-group { margin-bottom: 14px; }
+.form-group:last-child { margin-bottom: 0; }
+
+.form-label {
+display: block;
+font-size: 10px;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+color: #6b6b7a;
+margin-bottom: 7px;
+}
+
+.form-input {
+width: 100%;
+background-color: #18181d;
+border: 1px solid rgba(255,255,255,0.08);
+border-radius: 8px;
+padding: 9px 12px;
+font-family: inherit;
+font-size: 12px;
+color: #f0f0f2;
+outline: none;
+transition: border-color 0.18s, box-shadow 0.18s;
+}
+.form-input::placeholder { color: #3d3d4a; }
+.form-input:focus {
+border-color: rgba(255,255,255,0.18);
+box-shadow: 0 0 0 3px rgba(255,255,255,0.04);
+}
+
+.form-input.accent-blue:focus   { border-color: rgba(74,158,255,0.4);  box-shadow: 0 0 0 3px rgba(74,158,255,0.08); }
+.form-input.accent-green:focus  { border-color: rgba(52,211,153,0.4);  box-shadow: 0 0 0 3px rgba(52,211,153,0.08); }
+.form-input.accent-purple:focus { border-color: rgba(167,139,250,0.4); box-shadow: 0 0 0 3px rgba(167,139,250,0.08); }
+
+.form-textarea {
+resize: vertical;
+min-height: 80px;
+}
+
+.form-select {
+appearance: none;
+background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘10’ height=‘6’ fill=‘none’%3E%3Cpath d=‘M1 1l4 4 4-4’ stroke=’%236b6b7a’ stroke-width=‘1.5’ stroke-linecap=‘round’/%3E%3C/svg%3E”);
+background-repeat: no-repeat;
+background-position: right 12px center;
+padding-right: 32px;
+cursor: pointer;
+}
+.form-select option { background-color: #18181d; color: #f0f0f2; }
+
+/* Inline row */
+.form-row {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 10px;
+}
+
+/* ── NODE TYPE SELECTOR ───────────────── */
+.node-type-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 7px;
+}
+
+.node-type-option {
+padding: 9px 10px;
+background-color: #18181d;
+border: 1px solid rgba(255,255,255,0.07);
+border-radius: 8px;
+cursor: pointer;
+transition: background-color 0.15s, border-color 0.15s;
+display: flex;
+align-items: center;
+gap: 7px;
+font-size: 11px;
+color: #9999aa;
+}
+.node-type-option:hover {
+background-color: rgba(255,255,255,0.05);
+border-color: rgba(255,255,255,0.13);
+color: #f0f0f2;
+}
+.node-type-option.selected {
+border-color: var(–accent, rgba(255,255,255,0.3));
+background-color: rgba(255,255,255,0.04);
+color: var(–accent, #f0f0f2);
+}
+.node-type-dot {
+width: 7px; height: 7px;
+border-radius: 50%;
+background: var(–accent, #6b6b7a);
+flex-shrink: 0;
+}
+
+/* ── INFO BLOCK ───────────────────────── */
+.modal-info {
+background-color: #18181d;
+border: 1px solid rgba(255,255,255,0.07);
+border-radius: 9px;
+padding: 12px 14px;
+margin-bottom: 14px;
+}
+.modal-info-row {
+display: flex;
+align-items: center;
+justify-content: space-between;
+font-size: 11px;
+padding: 4px 0;
+border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.modal-info-row:last-child { border-bottom: none; padding-bottom: 0; }
+.modal-info-row:first-child { padding-top: 0; }
+.modal-info-key { color: #6b6b7a; }
+.modal-info-val { color: #f0f0f2; font-weight: 500; }
+.modal-info-badge {
+padding: 2px 8px;
+border-radius: 4px;
+font-size: 9px;
+letter-spacing: 0.08em;
+text-transform: uppercase;
+font-weight: 500;
+}
+
+/* ── DANGER ZONE ──────────────────────── */
+.danger-box {
+background-color: rgba(248,113,113,0.06);
+border: 1px solid rgba(248,113,113,0.15);
+border-radius: 9px;
+padding: 12px 14px;
+margin-bottom: 16px;
+}
+.danger-box-title {
+font-size: 11px;
+color: #f87171;
+font-weight: 500;
+margin-bottom: 5px;
+display: flex;
+align-items: center;
+gap: 6px;
+}
+.danger-box-desc {
+font-size: 11px;
+color: #6b6b7a;
+line-height: 1.55;
+}
+
+/* ── PROGRESS / STEP BAR ──────────────── */
+.modal-steps {
+display: flex;
+align-items: center;
+gap: 0;
+padding: 16px 20px 0;
+}
+.step {
+display: flex;
+align-items: center;
+gap: 7px;
+font-size: 10px;
+letter-spacing: 0.08em;
+text-transform: uppercase;
+color: #3d3d4a;
+flex: 1;
+}
+.step.active { color: #f0f0f2; }
+.step.done   { color: #34d399; }
+.step-num {
+width: 20px; height: 20px;
+border-radius: 50%;
+border: 1px solid rgba(255,255,255,0.1);
+display: flex; align-items: center; justify-content: center;
+font-size: 9px;
+flex-shrink: 0;
+background-color: transparent;
+}
+.step.active .step-num {
+border-color: #f0f0f2;
+background-color: #f0f0f2;
+color: #0c0c0e;
+}
+.step.done .step-num {
+border-color: #34d399;
+background-color: rgba(52,211,153,0.15);
+color: #34d399;
+}
+.step-line {
+flex: 1;
+height: 1px;
+background: rgba(255,255,255,0.07);
+margin: 0 8px;
+}
+.step.done + .step-line { background: rgba(52,211,153,0.3); }
+
+/* ── ANIMATIONS ───────────────────────── */
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(10px); }
+to   { opacity: 1; transform: translateY(0); }
+}
+.section {
+animation: fadeUp 0.4s ease both;
+}
+.section:nth-child(1) { animation-delay: 0.05s; }
+.section:nth-child(2) { animation-delay: 0.10s; }
+.section:nth-child(3) { animation-delay: 0.15s; }
+.section:nth-child(4) { animation-delay: 0.20s; }
+.section:nth-child(5) { animation-delay: 0.25s; }
+
+</style>
+</head>
+<body>
+<div class="demo-page">
+
+  <div class="page-label">Arcforge · Modal Design System</div>
+  <h1 class="page-title">Modal <span>Components</span></h1>
+  <p class="page-desc">Reusable modal styles. Click any button to see the modal. Copy the CSS block at the top and the HTML structure for each variant.</p>
+
+  <!-- ── VARIANT 1: Add Node ── -->
+
+  <div class="section">
+    <div class="section-title">Variant 1 — Add Node</div>
+    <div class="trigger-row">
+      <button class="btn btn-blue" onclick="openModal('modal-add')">+ Add Node</button>
+    </div>
+  </div>
+
+  <!-- ── VARIANT 2: Node Inspector ── -->
+
+  <div class="section">
+    <div class="section-title">Variant 2 — Node Inspector</div>
+    <div class="trigger-row">
+      <button class="btn btn-secondary" onclick="openModal('modal-inspect')">Inspect Node</button>
+    </div>
+  </div>
+
+  <!-- ── VARIANT 3: Generate Prompt ── -->
+
+  <div class="section">
+    <div class="section-title">Variant 3 — Generate AI Prompt</div>
+    <div class="trigger-row">
+      <button class="btn btn-green" onclick="openModal('modal-prompt')">⚡ Generate Prompt</button>
+    </div>
+  </div>
+
+  <!-- ── VARIANT 4: Delete Confirm ── -->
+
+  <div class="section">
+    <div class="section-title">Variant 4 — Confirm Delete</div>
+    <div class="trigger-row">
+      <button class="btn btn-danger" onclick="openModal('modal-delete')">Delete Node</button>
+    </div>
+  </div>
+
+  <!-- ── VARIANT 5: New Project (steps) ── -->
+
+  <div class="section">
+    <div class="section-title">Variant 5 — New Project (Multi-step)</div>
+    <div class="trigger-row">
+      <button class="btn btn-primary" onclick="openModal('modal-project')">New Arcspec Project</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════
+     MODAL 1 — ADD NODE
+═══════════════════════════════════════ -->
+
+<div class="modal-overlay" id="modal-add" onclick="closeOnOverlay(event, 'modal-add')">
+  <div class="modal">
+    <div class="modal-accent" style="background:linear-gradient(90deg,transparent,#4a9eff,transparent)"></div>
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <div class="modal-icon" style="background:rgba(74,158,255,0.1);border-color:rgba(74,158,255,0.18)">＋</div>
+        <div class="modal-title-wrap">
+          <div class="modal-label">Arcspec Designer</div>
+          <div class="modal-title">Add Node</div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeModal('modal-add')">✕</button>
+    </div>
+
+<div class="modal-body">
+  <p class="modal-desc">Choose a node type and give it a name. You can edit all properties later by clicking the node.</p>
+
+  <div class="form-group">
+    <label class="form-label">Node Type</label>
+    <div class="node-type-grid">
+      <div class="node-type-option selected" style="--accent:#4a9eff" onclick="selectType(this)">
+        <div class="node-type-dot"></div>Controller
+      </div>
+      <div class="node-type-option" style="--accent:#34d399" onclick="selectType(this)">
+        <div class="node-type-dot" style="background:#34d399"></div>Service
+      </div>
+      <div class="node-type-option" style="--accent:#a78bfa" onclick="selectType(this)">
+        <div class="node-type-dot" style="background:#a78bfa"></div>UseCase
+      </div>
+      <div class="node-type-option" style="--accent:#fb923c" onclick="selectType(this)">
+        <div class="node-type-dot" style="background:#fb923c"></div>Repository
+      </div>
+      <div class="node-type-option" style="--accent:#f472b6" onclick="selectType(this)">
+        <div class="node-type-dot" style="background:#f472b6"></div>Entity
+      </div>
+      <div class="node-type-option" style="--accent:#c084fc" onclick="selectType(this)">
+        <div class="node-type-dot" style="background:#c084fc"></div>Interface
+      </div>
+      <div class="node-type-option" style="--accent:#facc15" onclick="selectType(this)">
+        <div class="node-type-dot" style="background:#facc15"></div>Event
+      </div>
+      <div class="node-type-option" style="--accent:#22d3ee" onclick="selectType(this)">
+        <div class="node-type-dot" style="background:#22d3ee"></div>Database
+      </div>
+      <div class="node-type-option" style="--accent:#f87171" onclick="selectType(this)">
+        <div class="node-type-dot" style="background:#f87171"></div>Queue
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label">Name</label>
+    <input class="form-input accent-blue" type="text" placeholder="e.g. OrderController">
+  </div>
+
+  <div class="form-group">
+    <label class="form-label">Description (optional)</label>
+    <textarea class="form-input form-textarea" placeholder="What does this node do?"></textarea>
+  </div>
+</div>
+
+<div class="modal-divider"></div>
+<div class="modal-footer">
+  <button class="btn btn-ghost btn-sm" onclick="closeModal('modal-add')">Cancel</button>
+  <button class="btn btn-blue btn-sm" onclick="closeModal('modal-add')">Add Node</button>
+</div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MODAL 2 — NODE INSPECTOR
+═══════════════════════════════════════ -->
+
+<div class="modal-overlay" id="modal-inspect" onclick="closeOnOverlay(event, 'modal-inspect')">
+  <div class="modal">
+    <div class="modal-accent" style="background:linear-gradient(90deg,transparent,#34d399,transparent)"></div>
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <div class="modal-icon" style="background:rgba(52,211,153,0.1);border-color:rgba(52,211,153,0.18)">⬡</div>
+        <div class="modal-title-wrap">
+          <div class="modal-label">Service · MVC Layer</div>
+          <div class="modal-title">OrderService</div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeModal('modal-inspect')">✕</button>
+    </div>
+
+<div class="modal-body">
+  <div class="modal-info">
+    <div class="modal-info-row">
+      <span class="modal-info-key">Type</span>
+      <span class="modal-info-val" style="color:#34d399">Service</span>
+    </div>
+    <div class="modal-info-row">
+      <span class="modal-info-key">Layer</span>
+      <span class="modal-info-val">Business Logic</span>
+    </div>
+    <div class="modal-info-row">
+      <span class="modal-info-key">Connections</span>
+      <span class="modal-info-val">3 in · 2 out</span>
+    </div>
+    <div class="modal-info-row">
+      <span class="modal-info-key">Status</span>
+      <span class="modal-info-badge" style="background:rgba(52,211,153,0.12);color:#34d399">Active</span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label">Name</label>
+    <input class="form-input accent-green" type="text" value="OrderService">
+  </div>
+
+  <div class="form-group">
+    <label class="form-label">Description</label>
+    <textarea class="form-input form-textarea accent-green" style="min-height:64px">Handles all business logic for order management. Called from OrderController and CheckoutUseCase.</textarea>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label class="form-label">Technology</label>
+      <input class="form-input" type="text" placeholder="e.g. Laravel, NestJS">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Pattern</label>
+      <select class="form-input form-select">
+        <option>MVC</option>
+        <option>Clean Architecture</option>
+        <option>Modular</option>
+        <option>Event-Driven</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="modal-divider"></div>
+<div class="modal-footer space-between">
+  <button class="btn btn-danger btn-sm" onclick="closeModal('modal-inspect')">Delete Node</button>
+  <div style="display:flex;gap:8px">
+    <button class="btn btn-ghost btn-sm" onclick="closeModal('modal-inspect')">Cancel</button>
+    <button class="btn btn-green btn-sm" onclick="closeModal('modal-inspect')">Save Changes</button>
+  </div>
+</div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MODAL 3 — GENERATE PROMPT
+═══════════════════════════════════════ -->
+
+<div class="modal-overlay" id="modal-prompt" onclick="closeOnOverlay(event, 'modal-prompt')">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-accent" style="background:linear-gradient(90deg,transparent,#34d399,transparent)"></div>
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <div class="modal-icon" style="background:rgba(52,211,153,0.1);border-color:rgba(52,211,153,0.18)">⚡</div>
+        <div class="modal-title-wrap">
+          <div class="modal-label">Arcspec Export</div>
+          <div class="modal-title">Generate AI Prompt</div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeModal('modal-prompt')">✕</button>
+    </div>
+
+<div class="modal-body">
+  <p class="modal-desc">Your Arcspec graph will be converted into a structured AI prompt. Choose your target stack and what you want generated.</p>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label class="form-label">Language</label>
+      <select class="form-input form-select">
+        <option>PHP</option>
+        <option>TypeScript</option>
+        <option>Python</option>
+        <option>Go</option>
+        <option>Rust</option>
+        <option>Java</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Framework</label>
+      <select class="form-input form-select">
+        <option>Laravel</option>
+        <option>NestJS</option>
+        <option>FastAPI</option>
+        <option>Gin</option>
+        <option>Spring Boot</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label">Generate</label>
+    <select class="form-input form-select">
+      <option>Full architecture scaffold</option>
+      <option>Interfaces & contracts only</option>
+      <option>Database migrations</option>
+      <option>API routes & controllers</option>
+      <option>Docker + CI/CD config</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label">Additional context</label>
+    <textarea class="form-input form-textarea" placeholder="Any extra requirements for the AI..."></textarea>
+  </div>
+
+  <div class="modal-info">
+    <div class="modal-info-row">
+      <span class="modal-info-key">Nodes in graph</span>
+      <span class="modal-info-val">14</span>
+    </div>
+    <div class="modal-info-row">
+      <span class="modal-info-key">Connections</span>
+      <span class="modal-info-val">11</span>
+    </div>
+    <div class="modal-info-row">
+      <span class="modal-info-key">Architecture</span>
+      <span class="modal-info-badge" style="background:rgba(167,139,250,0.12);color:#a78bfa">Clean Architecture</span>
+    </div>
+  </div>
+</div>
+
+<div class="modal-divider"></div>
+<div class="modal-footer">
+  <button class="btn btn-ghost btn-sm" onclick="closeModal('modal-prompt')">Cancel</button>
+  <button class="btn btn-secondary btn-sm" onclick="closeModal('modal-prompt')">Copy JSON</button>
+  <button class="btn btn-green btn-sm" onclick="closeModal('modal-prompt')">⚡ Generate Prompt</button>
+</div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MODAL 4 — DELETE CONFIRM
+═══════════════════════════════════════ -->
+
+<div class="modal-overlay" id="modal-delete" onclick="closeOnOverlay(event, 'modal-delete')">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-accent" style="background:linear-gradient(90deg,transparent,#f87171,transparent)"></div>
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <div class="modal-icon" style="background:rgba(248,113,113,0.1);border-color:rgba(248,113,113,0.2)">⚠</div>
+        <div class="modal-title-wrap">
+          <div class="modal-label">Destructive Action</div>
+          <div class="modal-title">Delete Node</div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeModal('modal-delete')">✕</button>
+    </div>
+
+
+<div class="modal-body">
+  <div class="danger-box">
+    <div class="danger-box-title">⚠ This cannot be undone</div>
+    <div class="danger-box-desc">Deleting <strong style="color:#f0f0f2">OrderService</strong> will also remove all 5 connections linked to this node. Other nodes will remain.</div>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label">Type node name to confirm</label>
+    <input class="form-input" type="text" placeholder="OrderService" style="border-color:rgba(248,113,113,0.2)">
+  </div>
+</div>
+
+<div class="modal-divider"></div>
+<div class="modal-footer">
+  <button class="btn btn-ghost btn-sm" onclick="closeModal('modal-delete')">Cancel</button>
+  <button class="btn btn-danger btn-sm" onclick="closeModal('modal-delete')">Delete Node</button>
+</div>
+
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MODAL 5 — NEW PROJECT (MULTI-STEP)
+═══════════════════════════════════════ -->
+
+<div class="modal-overlay" id="modal-project" onclick="closeOnOverlay(event, 'modal-project')">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-accent" style="background:linear-gradient(90deg,transparent,rgba(240,240,242,0.4),transparent)"></div>
+
+
+<div class="modal-steps">
+  <div class="step done">
+    <div class="step-num">✓</div>
+    Project
+  </div>
+  <div class="step-line"></div>
+  <div class="step active">
+    <div class="step-num">2</div>
+    Blueprint
+  </div>
+  <div class="step-line"></div>
+  <div class="step">
+    <div class="step-num">3</div>
+    Settings
+  </div>
+</div>
+
+<div class="modal-header" style="padding-top:14px">
+  <div class="modal-header-left">
+    <div class="modal-icon" style="background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.1)">◈</div>
+    <div class="modal-title-wrap">
+      <div class="modal-label">Step 2 of 3</div>
+      <div class="modal-title">Choose Blueprint</div>
+    </div>
+  </div>
+  <button class="modal-close" onclick="closeModal('modal-project')">✕</button>
+</div>
+
+<div class="modal-body">
+  <p class="modal-desc">Pick a starting architecture pattern. You can modify every node and connection after creation.</p>
+
+  <div class="node-type-grid" style="grid-template-columns:1fr 1fr">
+    <div class="node-type-option selected" style="--accent:#f0f0f2;padding:12px" onclick="selectType(this)">
+      <div class="node-type-dot" style="background:#f0f0f2"></div>
+      <div>
+        <div style="font-size:11px;color:#f0f0f2;margin-bottom:2px">MVC</div>
+        <div style="font-size:9px;color:#6b6b7a">Classic, fast setup</div>
+      </div>
+    </div>
+    <div class="node-type-option" style="--accent:#a78bfa;padding:12px" onclick="selectType(this)">
+      <div class="node-type-dot" style="background:#a78bfa"></div>
+      <div>
+        <div style="font-size:11px;margin-bottom:2px">Clean Architecture</div>
+        <div style="font-size:9px;color:#6b6b7a">Strict layer isolation</div>
+      </div>
+    </div>
+    <div class="node-type-option" style="--accent:#34d399;padding:12px" onclick="selectType(this)">
+      <div class="node-type-dot" style="background:#34d399"></div>
+      <div>
+        <div style="font-size:11px;margin-bottom:2px">Modular Monolith</div>
+        <div style="font-size:9px;color:#6b6b7a">Isolated modules</div>
+      </div>
+    </div>
+    <div class="node-type-option" style="--accent:#facc15;padding:12px" onclick="selectType(this)">
+      <div class="node-type-dot" style="background:#facc15"></div>
+      <div>
+        <div style="font-size:11px;margin-bottom:2px">Event-Driven</div>
+        <div style="font-size:9px;color:#6b6b7a">Async, decoupled</div>
+      </div>
+    </div>
+    <div class="node-type-option" style="--accent:#6b6b7a;padding:12px;grid-column:span 2" onclick="selectType(this)">
+      <div class="node-type-dot" style="background:#6b6b7a"></div>
+      <div>
+        <div style="font-size:11px;margin-bottom:2px">Blank Canvas</div>
+        <div style="font-size:9px;color:#6b6b7a">Start from scratch</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-divider"></div>
+<div class="modal-footer space-between">
+  <button class="btn btn-ghost btn-sm" onclick="closeModal('modal-project')">← Back</button>
+  <div style="display:flex;gap:8px">
+    <button class="btn btn-ghost btn-sm" onclick="closeModal('modal-project')">Cancel</button>
+    <button class="btn btn-primary btn-sm" onclick="closeModal('modal-project')">Next →</button>
+  </div>
+</div>
+
+
+  </div>
+</div>
+
+<script>
+  function openModal(id) {
+    document.getElementById(id).classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function closeOnOverlay(e, id) {
+    if (e.target === document.getElementById(id)) closeModal(id);
+  }
+  function selectType(el) {
+    const grid = el.closest('.node-type-grid');
+    grid.querySelectorAll('.node-type-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal-overlay.open').forEach(m => {
+        m.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "commonjs",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "dist",
+    "rootDir": "app",
+    "baseUrl": ".",
+    "paths": {
+      "@core/graph": ["app/core/graph/index.ts"],
+      "@core/ports": ["app/core/ports/index.ts"],
+      "@core/engine": ["app/core/engine/index.ts"],
+      "@core/frameworks/laravel": ["app/core/frameworks/laravel/index.ts"],
+      "@shared/types": ["app/shared/types/index.ts"]
+    }
+  },
+  "include": ["app/**/*"],
+  "exclude": ["node_modules", "dist", "app/renderer"]
+}

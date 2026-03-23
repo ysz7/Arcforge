@@ -1,0 +1,23 @@
+{
+  "id": "arcspec",
+  "name": "ArcSpec",
+  "version": "1.0.0",
+  "author": "Arcforge",
+  "description": "Visual backend architecture designer. Language-agnostic JSON canvas for designing architecture and generating AI prompts.",
+  "icon": "◈",
+  "parser": "parser.js",
+  "nodes": "nodes.js",
+  "accepts": "file",
+  "fileTypes": [".json"],
+  "canCreateNew": true,
+  "capabilities": {
+    "openFileOnNodeClick": true,
+    "editNodes": true,
+    "addNodes": true,
+    "deleteNodes": true,
+    "addEdges": true,
+    "deleteEdges": true,
+    "saveGraph": true,
+    "exportPrompt": true
+  }
+}

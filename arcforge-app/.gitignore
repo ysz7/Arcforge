@@ -1,0 +1,19 @@
+# Dependencies & build
+node_modules/
+release/
+
+# Logs & env
+*.log
+.env
+.env.local
+
+# OS & IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Optional
+*.tsbuildinfo
