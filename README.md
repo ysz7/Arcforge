@@ -1,4 +1,4 @@
-<h2><img src="docs/icons/favicon.png" alt="Arcforge icon" width="32" align="left"> Arcforge</h2>
+<h2><img src="docs/icons/favicon.png" alt="Arcforge icon" width="32" align="left"> Arcforge (Open Source)</h2>
 
 [![Platform: Windows x64](https://img.shields.io/badge/platform-Windows%20x64-0078D6?logo=windows&logoColor=white)](https://github.com/ysz7/Arcforge)
 [![Plugin: Laravel](https://img.shields.io/badge/plugin-Laravel-FF2D20?logo=laravel&logoColor=white)](https://github.com/ysz7/Arcforge/tree/main/plugins/laravel)
